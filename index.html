@@ -1104,8 +1104,14 @@ function shareUrl(){
   }catch(e){}
   return SHARE_URL;
 }
+function starText(n){
+  let s = "";
+  for (let i = 1; i <= 5; i++) s += (i <= n ? "★" : "☆");
+  return s;
+}
 function shareText(){
   return "今日の1枚は〈" + card.name + "〉。" + card.kw + "、という日でした。\n"
+       + "今日の総合運 " + starText(sTotal) + "\n"
        + "ラッキーカラーは" + luckyColor.n + "、ラッキーアイテムは" + luckyItem + "。";
 }
 
@@ -1114,7 +1120,10 @@ function setupShareLinks(){
   const t = encodeURIComponent(shareText());
   $("shareX").href = "https://twitter.com/intent/tweet?text=" + t + "&url=" + u +
                      "&hashtags=" + encodeURIComponent(HASHTAG + ",ゴールドライフオンライン");
-  $("shareLine").href = "https://social-plugins.line.me/lineit/share?url=" + u + "&text=" + t;
+  /* LINE は「lineit/share」だとURLしか送られないため、
+     本文ごと送れる「line.me/R/msg/text/」を使います */
+  $("shareLine").href = "https://line.me/R/msg/text/?" +
+    encodeURIComponent(shareText() + "\n" + shareUrl() + "\n#" + HASHTAG);
 }
 
 /* works.json があれば差し替える（同じフォルダに置くだけ） */
