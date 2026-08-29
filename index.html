@@ -1,0 +1,1132 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>星よみ、今日の一枚</title>
+<meta name="description" content="1日1回、カードを1枚。今日の運勢とラッキーカラー、そして今日のあなたに刺さるかもしれない一作を。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Maru+Gothic:wght@400;500;700&family=Yomogi&display=swap">
+<style>
+/* ============================================================
+   星よみ、今日の一枚 — ゴールドライフオンライン
+   紫の夜空に白い手描きの星模様、黄色のアクセント。
+   埋め込み先が白でも成立するよう、全色を明示指定した単一テーマ。
+   ============================================================ */
+:root{
+  --violet:#5B4A9E;
+  --violet-deep:#463781;
+  --violet-soft:#8C7CD0;
+  --violet-pale:#F2EFFC;
+  --ink:#3B2F6B;
+  --yellow:#F7DA57;
+  --yellow-deep:#E3BE2E;
+  --cream:#FFFCF2;
+  --white:#FFFFFF;
+  --pink:#EE7FA8;
+  --green:#48AE86;
+  --serif:"Kaisei Decol", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --mincho:"Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif;
+  --sans:"Zen Maru Gothic", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --hand:"Yomogi", "Zen Maru Gothic", sans-serif;
+  --leaf-gold:#B08D3A;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--violet);
+  color:var(--white);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.85;
+  -webkit-text-size-adjust:100%;
+  min-height:100vh;
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* --- 背景の飾り --- */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;color:var(--yellow)}
+.blob.tr{top:-13%;right:-24%;width:46%}
+.blob.bl{bottom:-9%;left:-24%;width:48%}
+.doodle{position:absolute;color:#fff;opacity:.3}
+.doodle.y{color:var(--yellow);opacity:.85}
+.doodle.tw{animation:tw 4.5s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.18}50%{opacity:.72}}
+
+.wrap{
+  position:relative;z-index:1;
+  max-width:560px;margin:0 auto;
+  padding:30px 20px 34px;width:100%;
+}
+
+/* --- ヘッダー --- */
+.head{text-align:center;margin-bottom:6px}
+.eyebrow{
+  font-family:var(--hand);
+  font-size:13px;letter-spacing:.18em;color:var(--yellow);
+  margin:0 0 8px;text-indent:.18em;
+}
+.title{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(28px,7.6vw,38px);line-height:1.32;
+  color:var(--white);margin:0;text-wrap:balance;
+  text-shadow:0 3px 0 rgba(70,55,129,.35);
+}
+.squiggle{display:block;width:150px;height:12px;margin:8px auto 0;color:var(--yellow)}
+.lede{
+  font-size:14.5px;color:rgba(255,255,255,.88);
+  margin:12px auto 0;max-width:25em;
+}
+.date{
+  font-family:var(--hand);
+  text-align:center;font-size:13px;letter-spacing:.14em;color:var(--yellow);
+  margin:16px 0 0;font-variant-numeric:tabular-nums;
+}
+
+/* --- カード --- */
+.stage{
+  perspective:1400px;
+  display:flex;justify-content:center;
+  margin:16px 0 0;
+  position:relative;
+}
+.card{
+  position:relative;
+  width:clamp(212px,64vw,248px);
+  aspect-ratio:5/7.4;
+  transform-style:preserve-3d;
+  transition:transform 1.8s cubic-bezier(.2,.75,.2,1), width .7s ease .95s;
+  cursor:pointer;
+  animation:float 5.5s ease-in-out infinite;
+}
+.card:focus-visible{outline:3px solid var(--yellow);outline-offset:10px;border-radius:18px}
+@keyframes float{0%,100%{translate:0 0}50%{translate:0 -9px}}
+.card.spun{
+  transform:rotateY(900deg);
+  animation:none;
+  width:clamp(176px,52vw,204px);
+  cursor:default;
+}
+.face{
+  position:absolute;inset:0;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 22px 40px rgba(38,26,86,.42);
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* 裏面：シンプルに、大きく */
+.back{
+  background:var(--cream);
+  border:2px solid var(--violet-deep);
+}
+.back::before{
+  content:"";position:absolute;inset:11px;
+  border:1.5px solid rgba(91,74,158,.35);border-radius:9px;
+}
+.back .bmark{width:46%;color:var(--violet)}
+
+/* 表面：夜空と天球儀（アール・ヌーヴォー風の金の飾り枠） */
+.front{
+  transform:rotateY(180deg);
+  --tint:#141C46;
+  --deep:#5A73C8;
+  --gilt:#E4C481;
+  background:#0A0F26;
+  border:2px solid #C9A45E;
+  flex-direction:column;justify-content:center;
+  padding:8% 12% 16.5%;text-align:center;
+}
+.fbg{
+  position:absolute;inset:0;
+  background:linear-gradient(168deg, var(--tint) 0%, #070B1E 100%);
+}
+.nebula{position:absolute;inset:0;overflow:hidden}
+.nebula i{
+  position:absolute;border-radius:50%;
+  background:radial-gradient(circle, var(--deep) 0%, rgba(0,0,0,0) 70%);
+  filter:blur(5px);
+}
+.nebula i:nth-child(1){left:-14%;top:12%;width:80%;aspect-ratio:1;opacity:.5}
+.nebula i:nth-child(2){right:-18%;top:36%;width:72%;aspect-ratio:1;opacity:.34}
+.nebula i:nth-child(3){left:20%;bottom:-10%;width:64%;aspect-ratio:1;opacity:.24}
+.cosmos{position:absolute;inset:0;width:100%;height:100%}
+.cosmos .orbit{fill:none;stroke:var(--gilt);stroke-width:.8;opacity:.42}
+.cosmos .planet{fill:var(--gilt)}
+.cosmos .crystal{fill:#BFE0F2;opacity:.3}
+.cosmos .facet{fill:#FFFFFF;opacity:.35}
+.cosmos .star{fill:#FFFFFF}
+.halo{
+  position:absolute;top:36%;left:50%;translate:-50% -50%;
+  width:52%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,.34) 0%, rgba(255,255,255,0) 66%);
+}
+.frame{position:absolute;inset:0;width:100%;height:100%;color:var(--gilt);opacity:.85}
+.motifwrap{
+  position:relative;z-index:1;width:80%;aspect-ratio:1;
+  margin:0 auto;display:flex;align-items:center;justify-content:center;
+}
+.aureole{position:absolute;inset:0;width:100%;height:100%;color:var(--gilt);opacity:.5}
+.front .motif{
+  width:58%;color:#FFF8E9;
+  filter:drop-shadow(0 0 8px var(--deep)) drop-shadow(0 0 16px rgba(255,255,255,.35));
+}
+.tex{
+  position:absolute;inset:0;opacity:.5;
+  background-image:radial-gradient(circle at 1px 1px, rgba(255,255,255,.10) 0.8px, transparent 1.1px);
+  background-size:11px 11px;
+}
+.plate{position:relative;z-index:1;margin-top:2%;width:100%}
+.kwtag{
+  display:inline-block;
+  font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.12em;text-indent:.12em;
+  color:#1B1330;background:linear-gradient(180deg,#F0DDA9,#D9B26B);
+  border-radius:999px;padding:2px 13px;white-space:nowrap;
+  box-shadow:0 0 10px rgba(228,196,129,.35);
+}
+.front .cname{
+  font-family:var(--mincho);font-weight:800;
+  font-size:clamp(20px,5.6vw,24px);letter-spacing:.08em;text-indent:.08em;
+  line-height:1.3;margin:8px 0 0;color:#FFF8E9;
+  text-shadow:0 0 12px var(--deep), 0 0 26px rgba(0,0,0,.5);
+}
+.namerule{display:block;width:74%;margin:5px auto 0;color:var(--gilt)}
+.front .cyomi{
+  font-family:var(--sans);
+  font-size:9.5px;font-weight:500;letter-spacing:.22em;text-indent:.22em;
+  color:#FFFFFF;opacity:.55;margin:4px 0 0;
+}
+
+/* --- 引くボタン --- */
+.draw{
+  display:block;margin:26px auto 0;
+  min-height:58px;padding:0 38px;
+  font-family:var(--sans);font-size:18px;font-weight:700;letter-spacing:.08em;
+  color:var(--ink);
+  background:var(--yellow);
+  border:2px solid var(--violet-deep);border-radius:999px;cursor:pointer;
+  box-shadow:0 6px 0 var(--violet-deep);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.draw:hover{transform:translateY(2px);box-shadow:0 4px 0 var(--violet-deep)}
+.draw:active{transform:translateY(6px);box-shadow:0 0 0 var(--violet-deep)}
+.draw:focus-visible{outline:3px solid var(--white);outline-offset:3px}
+.note{
+  font-family:var(--hand);
+  text-align:center;font-size:13px;color:rgba(255,255,255,.9);margin:16px 0 0;
+}
+
+/* --- 結果 --- */
+.result{margin-top:26px}
+.result[hidden]{display:none}
+.reveal{opacity:0;transform:translateY(16px);animation:rise .75s ease forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+
+.panel{
+  background:var(--cream);
+  color:var(--ink);
+  border:2px solid var(--violet-deep);
+  border-radius:18px;
+  padding:20px 18px;margin-bottom:16px;
+  box-shadow:0 6px 0 rgba(70,55,129,.55);
+  position:relative;
+}
+.plabel{
+  font-family:var(--hand);
+  font-size:13px;letter-spacing:.14em;
+  color:var(--violet);margin:0 0 14px;
+  display:flex;align-items:center;gap:9px;
+}
+.plabel .ic{width:17px;height:17px;flex:none;color:var(--yellow-deep)}
+.plabel::after{
+  content:"";flex:1;height:0;
+  border-top:2px dotted rgba(91,74,158,.35);
+}
+.msg{
+  font-family:var(--serif);font-size:16.5px;line-height:1.95;
+  color:var(--ink);margin:0;
+}
+
+/* 総合運 */
+.total{
+  display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+  background:var(--violet-pale);border:2px dashed rgba(91,74,158,.4);border-radius:14px;
+  padding:11px 14px;margin:0 0 16px;
+}
+.total .tname{font-family:var(--sans);font-weight:700;font-size:15px;letter-spacing:.08em;color:var(--violet)}
+.total .tstars{font-size:23px;letter-spacing:.14em;line-height:1;color:var(--yellow-deep)}
+.total .tstars .off{color:rgba(91,74,158,.22)}
+
+/* 星取り */
+.scores{display:grid;grid-template-columns:1fr;gap:13px}
+.score{display:grid;grid-template-columns:66px auto;gap:3px 12px;align-items:center}
+.score .sname{font-size:13.5px;font-weight:700;letter-spacing:.06em;color:var(--violet)}
+.score .stars{font-size:16px;letter-spacing:.14em;line-height:1}
+.score .scmt{grid-column:2;font-size:14px;color:var(--ink);line-height:1.7}
+.s-love .stars{color:var(--pink)}
+.s-work .stars{color:var(--violet-soft)}
+.s-health .stars{color:var(--green)}
+.stars .off{color:rgba(91,74,158,.22)}
+
+/* ラッキー */
+.lucky{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.lucky .box{
+  border:2px dashed rgba(91,74,158,.4);border-radius:14px;
+  padding:14px 10px;text-align:center;background:var(--violet-pale);
+}
+.lucky .cap{font-family:var(--hand);font-size:11.5px;letter-spacing:.14em;color:var(--violet);margin:0 0 9px}
+.swatch{
+  width:44px;height:44px;border-radius:50%;margin:0 auto 9px;
+  border:2px solid var(--violet-deep);
+  box-shadow:0 3px 0 rgba(70,55,129,.4);
+}
+.itemwrap{
+  width:44px;height:44px;margin:0 auto 9px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;background:var(--yellow);
+  border:2px solid var(--violet-deep);box-shadow:0 3px 0 rgba(70,55,129,.4);
+  color:var(--violet-deep);
+}
+.lucky .val{font-family:var(--serif);font-weight:700;font-size:16px;color:var(--ink);margin:0;line-height:1.5}
+
+/* おすすめ作品 */
+.pick .lead{font-size:14.5px;color:var(--ink);margin:0 0 14px;line-height:1.8}
+.pick .work{
+  display:block;text-decoration:none;position:relative;
+  border:2px solid var(--violet-deep);border-radius:14px;
+  padding:17px 15px;
+  background:linear-gradient(150deg,var(--violet) 0%, var(--violet-deep) 100%);
+  box-shadow:0 5px 0 rgba(70,55,129,.6);
+  transition:transform .14s ease, box-shadow .14s ease;
+}
+.pick .work:hover{transform:translateY(2px);box-shadow:0 3px 0 rgba(70,55,129,.6)}
+.pick .work:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.pick .wtitle{
+  font-family:var(--serif);font-size:17px;font-weight:700;color:var(--white);
+  margin:0;line-height:1.6;
+}
+.pick .wnote{font-size:13px;color:rgba(255,255,255,.8);margin:7px 0 0;line-height:1.7}
+.pick .wnote:empty{display:none}
+.pick .wgo{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--hand);font-size:13.5px;color:var(--yellow);margin-top:10px;letter-spacing:.06em;
+}
+.pick .wgo::after{content:"→"}
+.again{
+  display:block;width:100%;margin-top:14px;
+  min-height:48px;font-family:var(--sans);font-size:14px;font-weight:500;color:var(--violet);
+  background:var(--white);border:2px dashed rgba(91,74,158,.45);border-radius:999px;cursor:pointer;
+  transition:background .2s ease,border-color .2s ease;
+}
+.again:hover{background:var(--violet-pale);border-color:var(--violet)}
+.again:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+
+/* シェア */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.sbtn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  min-height:54px;padding:0 8px;text-decoration:none;
+  font-family:var(--sans);font-size:14.5px;font-weight:700;
+  color:#fff;border:2px solid var(--violet-deep);border-radius:14px;
+  box-shadow:0 4px 0 rgba(70,55,129,.55);cursor:pointer;
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.sbtn:hover{transform:translateY(2px);box-shadow:0 2px 0 rgba(70,55,129,.55)}
+.sbtn:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.sbtn svg{width:19px;height:19px;flex:none}
+.sbtn.x{background:#14131A}
+.sbtn.line{background:#06C755}
+.shint{
+  font-family:var(--hand);font-size:12.5px;line-height:1.9;
+  color:var(--violet);margin:14px 0 0;text-align:center;
+}
+.shint b{color:var(--ink)}
+
+.foot{
+  text-align:center;font-family:var(--hand);font-size:13px;color:rgba(255,255,255,.9);
+  margin:24px 0 0;line-height:2;
+}
+.foot a{color:var(--yellow);text-underline-offset:4px}
+.close{
+  display:block;margin:22px auto 0;
+  min-height:50px;padding:0 30px;
+  font-family:var(--sans);font-size:14.5px;font-weight:700;color:#fff;
+  background:transparent;border:2px solid rgba(255,255,255,.65);border-radius:999px;
+  cursor:pointer;transition:background .2s ease,border-color .2s ease;
+}
+.close:hover{background:rgba(255,255,255,.14);border-color:#fff}
+.close:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+
+@media (max-width:400px){
+  body{font-size:16px}
+  .lucky{gap:10px}
+  .lucky .cap{font-size:11px;letter-spacing:.04em}
+  .wrap{padding:26px 15px 28px}
+  .panel{padding:18px 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+}
+</style>
+</head>
+<body>
+
+<div class="bg" id="bg" aria-hidden="true">
+  <svg class="blob tr" viewBox="0 0 200 200" fill="currentColor"><path d="M182 8c14 26 22 60 10 88s-42 48-70 62-56 18-78 6S8 118 14 92s34-46 62-60S168-18 182 8z"/></svg>
+  <svg class="blob bl" viewBox="0 0 200 200" fill="currentColor"><path d="M18 196c-16-24-24-58-14-88s40-52 70-64 62-14 82 2 20 48 12 76-24 52-50 66-84 32-100 8z"/></svg>
+</div>
+
+<div class="wrap">
+  <header class="head">
+    <p class="eyebrow">ゴールドライフオンライン</p>
+    <h1 class="title">星よみ、今日の一枚</h1>
+    <svg class="squiggle" viewBox="0 0 150 12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+      <path d="M3 8c12-7 24 7 36 0s24 7 36 0 24 7 36 0 12-4 36 0" stroke-width="2.6"/>
+    </svg>
+    <p class="lede">1枚めくると、今日の運勢と、あなたの心に刺さるかもしれない一作が出てきます。</p>
+  </header>
+
+  <p class="date" id="dateLabel"></p>
+
+  <div class="stage">
+    <div class="card" id="card" role="button" tabindex="0" aria-label="カードをめくって今日の運勢を見る">
+      <span class="face back">
+        <svg class="bmark" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+          <path d="M50 12c3 18 17 32 35 35-18 3-32 17-35 35-3-18-17-32-35-35 18-3 32-17 35-35z"/>
+          <circle cx="50" cy="47" r="44" stroke-dasharray="1.5 7" stroke-width="1.6"/>
+        </svg>
+      </span>
+      <span class="face front" id="front">
+        <span class="fbg"></span>
+        <span class="nebula"><i></i><i></i><i></i></span>
+        <span class="tex"></span>
+        <svg class="cosmos" viewBox="0 0 200 296" aria-hidden="true">
+          <g id="starfield"></g>
+          <g class="crystal">
+            <path d="M27 60l6-11 6 11-6 28z"/>
+            <path d="M170 104l5-9 5 9-5 24z"/>
+            <path d="M36 222l5-9 5 9-5 21z"/>
+            <path d="M163 210l6-11 6 11-6 26z"/>
+          </g>
+          <g class="facet">
+            <path d="M33 49l6 11-6 3z"/>
+            <path d="M175 95l5 9-5 2z"/>
+            <path d="M169 199l6 11-6 3z"/>
+          </g>
+          <g transform="rotate(-18 100 122)">
+            <ellipse class="orbit" cx="100" cy="122" rx="76" ry="26"/>
+            <circle class="planet" cx="24" cy="122" r="3.2"/>
+          </g>
+          <g transform="rotate(24 100 122)">
+            <ellipse class="orbit" cx="100" cy="122" rx="62" ry="19"/>
+            <circle class="planet" cx="162" cy="122" r="2.4"/>
+          </g>
+          <g transform="rotate(6 100 122)">
+            <ellipse class="orbit" cx="100" cy="122" rx="82" ry="33" opacity=".26"/>
+            <circle class="planet" cx="100" cy="155" r="2"/>
+          </g>
+          <g class="star" opacity=".9">
+            <path d="M62 78c.4 3.2 2.3 5.1 5.5 5.5-3.2.4-5.1 2.3-5.5 5.5-.4-3.2-2.3-5.1-5.5-5.5 3.2-.4 5.1-2.3 5.5-5.5z"/>
+            <path d="M146 166c.3 2.4 1.7 3.8 4.1 4.1-2.4.3-3.8 1.7-4.1 4.1-.3-2.4-1.7-3.8-4.1-4.1 2.4-.3 3.8-1.7 4.1-4.1z"/>
+            <path d="M52 186c.4 3 2.2 4.8 5.2 5.2-3 .4-4.8 2.2-5.2 5.2-.4-3-2.2-4.8-5.2-5.2 3-.4 4.8-2.2 5.2-5.2z"/>
+          </g>
+        </svg>
+        <span class="halo"></span>
+        <span class="motifwrap">
+          <svg class="aureole" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true">
+            <circle cx="50" cy="50" r="46" stroke-width="0.9" stroke-dasharray="1.4 4.6"/>
+            <circle cx="50" cy="50" r="40" stroke-width="0.7" opacity=".75"/>
+            <circle cx="50" cy="50" r="37" stroke-width="0.5" opacity=".45"/>
+            <g stroke-width="1.2">
+              <path d="M50 1.5v5M50 93.5v5M1.5 50h5M93.5 50h5"/>
+              <path d="M15.6 15.6l3.4 3.4M81 81l3.4 3.4M84.4 15.6L81 19M19 81l-3.4 3.4"/>
+            </g>
+            <g fill="#E4C481" stroke="none" opacity=".95">
+              <path d="M50 5.2l1.7 1.8-1.7 1.8-1.7-1.8z"/>
+              <path d="M71.5 10.96l1.7 1.8-1.7 1.8-1.7-1.8z"/>
+              <path d="M87.24 26.7l1.7 1.8-1.7 1.8-1.7-1.8z"/>
+              <path d="M93 48.2l1.7 1.8-1.7 1.8-1.7-1.8z"/>
+              <path d="M87.24 69.7l1.7 1.8-1.7 1.8-1.7-1.8z"/>
+              <path d="M71.5 85.44l1.7 1.8-1.7 1.8-1.7-1.8z"/>
+              <path d="M50 91.2l1.7 1.8-1.7 1.8-1.7-1.8z"/>
+              <path d="M28.5 85.44l1.7 1.8-1.7 1.8-1.7-1.8z"/>
+              <path d="M12.76 69.7l1.7 1.8-1.7 1.8-1.7-1.8z"/>
+              <path d="M7 48.2l1.7 1.8-1.7 1.8-1.7-1.8z"/>
+              <path d="M12.76 26.7l1.7 1.8-1.7 1.8-1.7-1.8z"/>
+              <path d="M28.5 10.96l1.7 1.8-1.7 1.8-1.7-1.8z"/>
+            </g>
+          </svg>
+          <span class="motif" id="motif"></span>
+        </span>
+        <span class="plate">
+          <span class="kwtag" id="cardKw"></span>
+          <p class="cname" id="cardName"></p>
+          <svg class="namerule" viewBox="0 0 100 8" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" aria-hidden="true">
+            <path d="M2 4h36M62 4h36"/>
+            <path d="M50 0.6l3 3.4-3 3.4-3-3.4z" fill="currentColor" stroke="none"/>
+            <path d="M43 4l1.6-1.8L46.2 4l-1.6 1.8zM56.9 4l-1.6-1.8L53.7 4l1.6 1.8z" fill="currentColor" stroke="none" opacity=".8"/>
+          </svg>
+          <p class="cyomi" id="cardYomi"></p>
+        </span>
+        <svg class="frame" viewBox="0 0 200 296" fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <defs>
+            <g id="cnr">
+              <path d="M11 56V29a18 18 0 0 1 18-18h27"/>
+              <path d="M21 56V35a14 14 0 0 1 14-14h21"/>
+              <path d="M32 56v-10a14 14 0 0 1 14-14h10"/>
+              <path d="M44 35.5l4.5 4.5-4.5 4.5-4.5-4.5z" fill="#E4C481" stroke="none"/>
+              <path d="M24.5 24.5l2.6 2.6-2.6 2.6-2.6-2.6z" fill="#E4C481" stroke="none" opacity=".85"/>
+            </g>
+            <g id="flr">
+              <path d="M72 13c13 3.4 18.5 12 18.5 19.5 0 6.4-4.4 10.6-9.6 10.6-4.3 0-7.4-3.2-7.4-7.3 0-3.7 2.7-6.4 6.2-6.4"/>
+              <path d="M128 13c-13 3.4-18.5 12-18.5 19.5 0 6.4 4.4 10.6 9.6 10.6 4.3 0 7.4-3.2 7.4-7.3 0-3.7-2.7-6.4-6.2-6.4"/>
+              <path d="M91 26h18"/>
+              <path d="M100 17l2.7 5.4 5.4 2.7-5.4 2.7-2.7 5.4-2.7-5.4-5.4-2.7 5.4-2.7z" fill="currentColor" stroke="none"/>
+            </g>
+          </defs>
+          <rect x="6.5" y="6.5" width="187" height="283" rx="11" stroke-width="1.1" opacity=".5"/>
+          <rect x="15" y="15" width="170" height="266" rx="6" stroke-width="0.9" opacity=".35" stroke-dasharray="2 5"/>
+          <path d="M11 72v152M189 72v152" stroke-width="1.1" opacity=".55"/>
+          <path d="M56 11h14M130 11h14M56 285h14M130 285h14" stroke-width="1.1" opacity=".55"/>
+          <g fill="#E4C481" stroke="none">
+            <path d="M11 141l4 7-4 7-4-7z"/>
+            <path d="M189 141l4 7-4 7-4-7z"/>
+            <path d="M27 108c.5 3.4 2.5 5.4 5.9 5.9-3.4.5-5.4 2.5-5.9 5.9-.5-3.4-2.5-5.4-5.9-5.9 3.4-.5 5.4-2.5 5.9-5.9z" opacity=".75"/>
+            <path d="M173 176c.5 3.4 2.5 5.4 5.9 5.9-3.4.5-5.4 2.5-5.9 5.9-.5-3.4-2.5-5.4-5.9-5.9 3.4-.5 5.4-2.5 5.9-5.9z" opacity=".75"/>
+          </g>
+          <use href="#cnr"/>
+          <use href="#cnr" transform="translate(200 0) scale(-1 1)"/>
+          <use href="#cnr" transform="translate(0 296) scale(1 -1)"/>
+          <use href="#cnr" transform="translate(200 296) scale(-1 -1)"/>
+          <use href="#flr"/>
+          <use href="#flr" transform="translate(0 296) scale(1 -1)"/>
+        </svg>
+      </span>
+    </div>
+  </div>
+
+  <button class="draw" id="drawBtn">今日の1枚を引く</button>
+  <p class="note" id="drawNote">占いは1日1回。今日のあなたに届いた1枚は、何度開いても同じです。</p>
+
+  <section class="result" id="result" hidden aria-live="polite">
+    <div class="panel">
+      <p class="plabel">
+        <svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c.7 5.4 3.9 8.6 9.3 9.3-5.4.7-8.6 3.9-9.3 9.3-.7-5.4-3.9-8.6-9.3-9.3C8.1 10.6 11.3 7.4 12 2z"/></svg>
+        今日の運勢
+      </p>
+      <p class="msg" id="message"></p>
+    </div>
+
+    <div class="panel">
+      <p class="plabel">
+        <svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+        今日の調子
+      </p>
+      <div class="total">
+        <span class="tname">今日の総合運</span>
+        <span class="tstars" id="starTotal"></span>
+      </div>
+      <div class="scores">
+        <div class="score s-love">
+          <span class="sname">恋愛運</span><span class="stars" id="starLove"></span>
+          <span class="scmt" id="cmtLove"></span>
+        </div>
+        <div class="score s-work">
+          <span class="sname">仕事運</span><span class="stars" id="starWork"></span>
+          <span class="scmt" id="cmtWork"></span>
+        </div>
+        <div class="score s-health">
+          <span class="sname">健康運</span><span class="stars" id="starHealth"></span>
+          <span class="scmt" id="cmtHealth"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="plabel">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M17 4a8.5 8.5 0 1 0 4 11 10 10 0 0 1-4-11z"/></svg>
+        今日のお守り
+      </p>
+      <div class="lucky">
+        <div class="box">
+          <p class="cap">ラッキーカラー</p>
+          <div class="swatch" id="swatch"></div>
+          <p class="val" id="colorName"></p>
+        </div>
+        <div class="box">
+          <p class="cap">ラッキーアイテム</p>
+          <div class="itemwrap">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M12 2c.7 5.4 3.9 8.6 9.3 9.3-5.4.7-8.6 3.9-9.3 9.3-.7-5.4-3.9-8.6-9.3-9.3C8.1 10.6 11.3 7.4 12 2z"/></svg>
+          </div>
+          <p class="val" id="itemName"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel pick">
+      <p class="plabel">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h7a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-7a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h7z"/></svg>
+        今日のあなたに刺さるかも
+      </p>
+      <p class="lead" id="pickLead"></p>
+      <a class="work" id="workLink" href="#" target="_blank" rel="noopener">
+        <p class="wtitle" id="workTitle"></p>
+        <p class="wnote" id="workNote"></p>
+        <span class="wgo">この作品を読む</span>
+      </a>
+      <button class="again" id="againBtn">別の作品をもう1本すすめてもらう</button>
+    </div>
+
+    <div class="panel share">
+      <p class="plabel">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+        今日の結果をシェアする
+      </p>
+      <div class="sgrid">
+        <a class="sbtn x" id="shareX" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.2 2H21l-6.5 7.4L22.2 22h-6l-4.7-6.2L6.1 22H3.3l7-8L2.2 2h6.2l4.3 5.7zm-1 18.3h1.6L7.9 3.6H6.2z"/></svg>
+          Xで投稿
+        </a>
+        <a class="sbtn line" id="shareLine" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.5c0-4.1-4-7.5-9-7.5s-9 3.4-9 7.5c0 3.7 3.2 6.8 7.5 7.4.3.1.7.2.8.5.1.3.1.6 0 .9l-.1.8c0 .3-.2 1 .9.6 1.1-.5 6-3.5 8.1-6h0A6.6 6.6 0 0 0 21 10.5z"/></svg>
+          LINEで送る
+        </a>
+      </div>
+      <p class="shint">
+        ハッシュタグ <b>#星よみ今日の一枚</b> を添えていただけたら、編集部が見にまいります。
+      </p>
+    </div>
+
+    <p class="foot">
+      次の1枚は、明日の朝に。<br>
+      <a href="https://renaissance-media.jp/" target="_blank" rel="noopener">ゴールドライフオンラインの新着作品を見る</a>
+    </p>
+
+    <button class="close" id="closeBtn" type="button">今日の占いを閉じる</button>
+  </section>
+</div>
+
+<script>
+/* ============================================================
+   背景の手描き模様
+   ============================================================ */
+const DOODLE = {
+  sparkle:'<path d="M12 2c.7 5.4 3.9 8.6 9.3 9.3-5.4.7-8.6 3.9-9.3 9.3-.7-5.4-3.9-8.6-9.3-9.3C8.1 10.6 11.3 7.4 12 2z" fill="currentColor" stroke="none"/>',
+  star:'<path d="M12 3l2.7 5.8 6.3.8-4.7 4.3 1.3 6.3L12 17.1 6.4 20.2l1.3-6.3L3 9.6l6.3-.8z"/>',
+  moon:'<path d="M16.4 3.2a9 9 0 1 0 4.4 12.2 10.6 10.6 0 0 1-4.4-12.2z"/>',
+  comet:'<path d="M20 4l-9 9M4 20l3.4-3.4M9 6l1.6 1.6M6 11l1.6 1.6"/><path d="M9.5 14.5a3.2 3.2 0 1 1-4.6 4.4"/>',
+  cloud:'<path d="M3 15c0-2.3 1.9-4.2 4.2-4.2.5-2.4 2.6-4.2 5.1-4.2 2.9 0 5.2 2.3 5.2 5.2 0 .3 0 .6-.1.9"/><path d="M17.5 12.7c1.9 0 3.5 1.5 3.5 3.4M6 18c1.5-1 3-1 4.5 0s3 1 4.5 0"/>',
+  butterfly:'<path d="M12 6.5v11"/><path d="M12 9.5C10 5.5 4 5.8 4 9.8c0 3.4 5.4 5.6 8 3.2"/><path d="M12 9.5c2-4 8-3.7 8 .3 0 3.4-5.4 5.6-8 3.2"/><path d="M12 6.5l-1.6-2M12 6.5l1.6-2"/>',
+  rose:'<path d="M12 4.5a3.6 3.6 0 1 1-2.9 5.8"/><path d="M12 7.4a1.5 1.5 0 1 0 1.1 2.5"/><path d="M12 12v7M12 15l-3.5-2M12 17l3.5-2"/>',
+  gem:'<path d="M8.5 4h7L20 9l-8 11L4 9z"/><path d="M4 9h16M8.5 4L12 20M15.5 4L12 20"/>',
+  crown:'<path d="M3.5 17.5h17L19 6.5l-4.5 4.2L12 4.5l-2.5 6.2L5 6.5z"/>',
+  card:'<rect x="6" y="3" width="12" height="18" rx="1.6"/><path d="M12 8l1.3 2.7 2.9.4-2.1 2 .5 2.9L12 14.6 9.4 16l.5-2.9-2.1-2 2.9-.4z"/>',
+  swirl:'<path d="M4.5 12A7.5 7.5 0 1 1 12 19.5c-2.6 0-4.5-1.9-4.5-4.2 0-2 1.6-3.5 3.5-3.5"/>',
+  wave:'<path d="M2.5 13c2-3.4 4.2-3.4 6.2 0s4.2 3.4 6.2 0 4.2-3.4 6.6 0"/>',
+  plus:'<path d="M12 4.5v15M4.5 12h15"/>',
+  ring:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4" stroke-dasharray="1.5 3"/>',
+  sword:'<path d="M19 3l-9 9M10 12l-1.8 1.8M12.2 14.2L14 12.4M6.5 15.5l2 2M4 22l3.5-3.5"/>'
+};
+/* 見出しの文字にかからないよう、上のほう（y<15%）は左右のはしだけに置いています */
+const PLACES = [
+  ["card",    2,  4, 46,-10,""],  ["sparkle", 4, 12, 20,  0,"y"],
+  ["swirl",  97,  5, 28,  0,""],  ["star",    95, 13, 22,  0,"y"],
+
+  ["rose",    5, 20, 42,  0,""],  ["sparkle",15, 17, 22,  0,"y"],
+  ["moon",   93, 19, 30,  0,"y"], ["sword",  86, 25, 38, 10,""],
+  ["gem",     8, 30, 26,  0,""],  ["star",   17, 27, 20,  0,""],
+  ["butterfly",95,31, 36,  0,""], ["plus",   12, 37, 18,  0,"y"],
+  ["cloud",   3, 41, 44,  0,""],  ["sparkle",92, 39, 22,  0,"y"],
+
+  ["crown",  20, 45, 32,  0,""],  ["ring",   80, 44, 26,  0,""],
+  ["star",    5, 49, 24,  0,"y"], ["card",   93, 51, 42,  7,""],
+  ["comet",  30, 53, 44,  0,"y"], ["wave",   70, 55, 34,  0,""],
+  ["swirl",   3, 57, 30,  0,""],  ["moon",   90, 60, 28,  0,"y"],
+  ["gem",    46, 58, 26,  0,""],  ["sparkle",72, 62, 22,  0,"y"],
+  ["butterfly",6,66, 36,  0,""],  ["star",   94, 70, 24,  0,""],
+  ["cloud",  26, 70, 42,  0,""],  ["plus",   58, 74, 18,  0,"y"],
+  ["rose",   88, 78, 38,  0,""],  ["sparkle", 7, 76, 20,  0,"y"],
+  ["ring",   16, 84, 26,  0,""],  ["comet",  78, 87, 44,  0,"y"],
+  ["star",   44, 88, 24,  0,"y"], ["swirl",  95, 92, 26,  0,""],
+  ["gem",     4, 92, 26,  0,""],  ["cloud",  62, 95, 42,  0,""],
+  ["moon",   30, 96, 26,  0,""],  ["sparkle",88, 97, 20,  0,"y"]
+];
+(function drawBg(){
+  const bg = document.getElementById("bg");
+  const twinkle = [2,8,15,22,28,32];
+  let html = "";
+  PLACES.forEach(function(p, i){
+    const [sym, x, y, w, rot, cls] = p;
+    html += '<svg class="doodle ' + cls + (twinkle.indexOf(i) >= 0 ? ' tw' : '') +
+      '" style="left:' + x + '%;top:' + y + '%;width:' + w + 'px;transform:translate(-50%,-50%) rotate(' + rot + 'deg);animation-delay:' + (i % 6) * 0.7 + 's" ' +
+      'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+      DOODLE[sym] + '</svg>';
+  });
+  bg.insertAdjacentHTML("beforeend", html);
+})();
+
+/* カード表面の星（毎回同じ配置になるよう、決まった種から作ります） */
+(function drawStars(){
+  const g = document.getElementById("starfield");
+  if (!g) return;
+  let a = 20260829;
+  const rnd = function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  let html = "";
+  for (let i = 0; i < 78; i++){
+    const x = (rnd() * 188 + 6).toFixed(1);
+    const y = (rnd() * 284 + 6).toFixed(1);
+    const r = (rnd() * rnd() * 1.5 + 0.35).toFixed(2);
+    const o = (rnd() * 0.65 + 0.25).toFixed(2);
+    html += '<circle class="star" cx="' + x + '" cy="' + y + '" r="' + r + '" opacity="' + o + '"/>';
+  }
+  g.insertAdjacentHTML("beforeend", html);
+})();
+
+/* ============================================================
+   カードのデータ
+   ============================================================ */
+const THEME_LEAD = {
+  love:   "心の揺れをていねいに描いた物語が、今日のあなたに寄り添ってくれそうです。",
+  family: "家族や、近くにいる人のことを思い出したくなる。そんな一作を選びました。",
+  life:   "ここまで歩いてきた道のりを、そっと肯定してくれる一作です。",
+  humor:  "肩の力を抜いて読める、笑って、少しだけ泣ける一作を。",
+  mystery:"先が気になって止まらなくなる、そんな一作が今日は合いそうです。",
+  health: "からだと心のことを、静かに考えたくなる一作です。",
+  work:   "働くこと、生きる糧のことを考えさせてくれる一作を。",
+  travel: "知らない土地の風が吹きこんでくるような一作です。"
+};
+
+const CARDS = [
+  {
+    name:"月と栞", yomi:"TSUKI TO SHIORI", kw:"休む", themes:["life","humor"], tint:"#141C46", deep:"#5A73C8",
+    motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M37 11a17 17 0 1 0 13 26 19 19 0 0 1-13-26z"/><path d="M17 38h11v16l-5.5-4.5L17 54z"/><path d="M44 15l1.4 3.6L49 20l-3.6 1.4L44 25l-1.4-3.6L39 20l3.6-1.4z" fill="currentColor" stroke="none"/></svg>',
+    msgs:[
+      "急がなくていい一日です。読みかけの本にそっと栞を挟むように、途中のままにしておくことを、自分に許してあげてください。",
+      "静けさが味方になる日。人に合わせるより、自分の呼吸の速さで動いたほうが、ものごとはうまく運びます。",
+      "懐かしい記憶が、ふと訪ねてきそうです。それは疲れではなく、これまでを労う合図。ゆっくり味わってください。"
+    ],
+    love:["連絡を待つより、待たせる余裕を。","近しい人の沈黙に、深い意味はありません。","昔の縁が、やわらかく思い出される日。"],
+    work:["前倒しより、丁寧さが評価されます。","ひとつ手放すと、全体が回りはじめます。","区切りをつけるのに向いた一日。"],
+    health:["睡眠をいつもより少し長めに。","目を休ませる時間を意識して。","温かい飲みもので、内側から整えて。"],
+    colors:[{n:"藍鼠",c:"#4A5A73"},{n:"象牙色",c:"#EDE4D2"},{n:"淡藤",c:"#B7B2DA"}],
+    items:["読みかけの本","白いハンカチ","湯呑み"]
+  },
+  {
+    name:"追い風", yomi:"OIKAZE", kw:"進む", themes:["work","life"], tint:"#0F2A34", deep:"#35A08C",
+    motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M7 21h27a6.5 6.5 0 1 0-6.5-6.5"/><path d="M7 31h33a6.5 6.5 0 1 1-6.5 6.5"/><path d="M7 41h19"/><path d="M48 46l1.2 3.2L52.5 50l-3.3 1.2L48 54l-1.2-2.8-3.3-1.2 3.3-.8z" fill="currentColor" stroke="none"/></svg>',
+    msgs:[
+      "背中を押される感覚のある日。迷っているなら、軽いほうを選んで構いません。動いた先に答えがあります。",
+      "思いがけない誘いや申し出がありそうです。断る理由を探す前に、いちど受けてみる価値があります。",
+      "滞っていたことが、ふっと動きはじめます。あなたが粘ったぶんの結果が、これから届きます。"
+    ],
+    love:["あなたから一言、が効く日。","距離が縮まる合図が出ています。","素直な言葉ほど、よく届きます。"],
+    work:["頼まれごとは引き受けたほうが得。","決断は午前中に。","新しいやり方を試してみて。"],
+    health:["少し歩くと、頭が軽くなります。","深呼吸を三回。それだけで整います。","外の空気を吸いに出てみて。"],
+    colors:[{n:"若草色",c:"#93C0A2"},{n:"空色",c:"#8FB4D9"},{n:"金糸雀色",c:"#E7C766"}],
+    items:["歩きやすい靴","新しいペン","小さな鏡"]
+  },
+  {
+    name:"手紙", yomi:"TEGAMI", kw:"伝える", themes:["family","love"], tint:"#2C1B34", deep:"#B06A9A",
+    motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="7" y="17" width="46" height="30" rx="3"/><path d="M7 20l23 15 23-15"/><path d="M46 8l1.7 4.5L52 14l-4.3 1.5L46 20l-1.7-4.5L40 14l4.3-1.5z" fill="currentColor" stroke="none"/></svg>',
+    msgs:[
+      "言えずにいた言葉が、今日なら自然に出てきます。長くなくていいので、思ったことをそのまま渡してみてください。",
+      "誰かからの知らせが、心を動かしそうです。返事は急がず、一晩置いてからでも遅くありません。",
+      "あなたの何気ない一言が、思った以上に人を支えます。今日は惜しまずに伝えてください。"
+    ],
+    love:["ありがとう、を口に出す日。","相手の話をさえぎらないで。","短い連絡が、長い沈黙より効きます。"],
+    work:["報告は早めに、ていねいに。","文章にすると、話が通ります。","聞き役に回ると信頼が増します。"],
+    health:["声を出す時間をつくって。","肩と首をゆるめて。","人と話すことが、いちばんの薬。"],
+    colors:[{n:"生成り色",c:"#EFE7D6"},{n:"桜鼠",c:"#D8BFC4"},{n:"藤紫",c:"#A9A3D8"}],
+    items:["便箋","切手","お気に入りのカップ"]
+  },
+  {
+    name:"灯台", yomi:"TOUDAI", kw:"見きわめる", themes:["life","mystery"], tint:"#0E1E44", deep:"#3C7ECC",
+    motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M23 22h14l5 30H18z"/><path d="M21 31h18M20 41h20"/><rect x="24" y="11" width="12" height="11" rx="1.5"/><path d="M11 15l11 3M49 15l-11 3"/><path d="M30 4l1.3 3.4L35 9l-3.7 1.3L30 14l-1.3-3.7L25 9l3.7-1.6z" fill="currentColor" stroke="none"/></svg>',
+    msgs:[
+      "迷いのなかにいても、進む方角はもう決まっています。今日は情報を増やすより、削るほうがうまくいきます。",
+      "遠くを照らす日。目の前の小さな不満より、半年先のことを考えると、答えのほうから出てきます。",
+      "誰かにとって、あなたが目印になっています。頼られたら、知っていることだけ渡せば十分です。"
+    ],
+    love:["察してもらおうとしないで。","一歩引くと、相手がよく見えます。","長く続く縁ほど、静かです。"],
+    work:["優先順位を書き出してみて。","断る勇気が、時間を生みます。","決めたことは変えないほうが吉。"],
+    health:["夜更かしは控えめに。","目の疲れに気をつけて。","規則正しさが、いちばん効きます。"],
+    colors:[{n:"群青",c:"#3C5A8C"},{n:"白鼠",c:"#DCD8CE"},{n:"琥珀色",c:"#D8A05A"}],
+    items:["眼鏡拭き","手帳","灯りの下の読書"]
+  },
+  {
+    name:"芽ぶき", yomi:"MEBUKI", kw:"はじめる", themes:["life","travel"], tint:"#12281E", deep:"#4CA46C",
+    motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M30 52V25"/><path d="M30 30c-9 0-15.5-5.5-15.5-13.5C23.5 16.5 30 22 30 30z"/><path d="M30 34c9 0 15.5-5.5 15.5-13.5C36.5 20.5 30 26 30 34z"/><path d="M19 52h22"/><path d="M47 9l1.3 3.4L52 14l-3.7 1.3L47 19l-1.3-3.7L42 14l3.7-1.6z" fill="currentColor" stroke="none"/></svg>',
+    msgs:[
+      "小さく始めるのに向いた日。うまくやろうとせず、まず一行、一歩、ひと口から。",
+      "新しい興味が芽を出します。年齢を理由に諦めていたことこそ、今日は相性が良さそうです。",
+      "まだ形になっていないものを、大切に抱えていてください。今日はそれで十分です。"
+    ],
+    love:["はじめて会う人に、良い予感。","関係を仕切り直すなら今日。","小さな親切から始まります。"],
+    work:["準備に時間をかけて正解。","新しい役割に縁があります。","まず名前をつけると進みます。"],
+    health:["旬のものを食べて。","朝の光を浴びる時間を。","軽いストレッチから。"],
+    colors:[{n:"若葉色",c:"#93B87C"},{n:"桃花色",c:"#E3B7B0"},{n:"生成り色",c:"#EFE7D6"}],
+    items:["種や苗","新しいノート","果物"]
+  },
+  {
+    name:"泉", yomi:"IZUMI", kw:"うるおす", themes:["health","life"], tint:"#0C2430", deep:"#33A0BC",
+    motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M30 8c5.5 9 9 13.5 9 19a9 9 0 1 1-18 0c0-5.5 3.5-10 9-19z"/><path d="M10 43c6.5-3.5 13-3.5 20 0s13.5 3.5 20 0"/><path d="M12 51c5.5-3 11.5-3 18 0s12.5 3 18 0"/></svg>',
+    msgs:[
+      "消耗していたぶんが、今日ゆっくり戻ってきます。頑張ることより、満たすことを選んでください。",
+      "涙もことばも、出しておくと軽くなります。ため込まないことが、今日いちばんの養生です。",
+      "人にしてもらうことを、遠慮しないでいい日。受け取る側に回っても大丈夫です。"
+    ],
+    love:["甘えるほうが、うまくいきます。","一緒に過ごす時間そのものが答え。","相手の疲れにも気づいてあげて。"],
+    work:["休憩を挟むほど、はかどります。","抱え込まず、分けてしまって。","今日は完璧を目指さないで。"],
+    health:["水分をいつもより多めに。","湯船にゆっくり。","早めに横になる日。"],
+    colors:[{n:"浅葱色",c:"#7FB6C2"},{n:"乳白色",c:"#F1EDE4"},{n:"露草色",c:"#6E8FC6"}],
+    items:["水のボトル","入浴剤","やわらかいタオル"]
+  },
+  {
+    name:"銀の鍵", yomi:"GIN NO KAGI", kw:"ひらく", themes:["mystery","work"], tint:"#1B1636", deep:"#7E6ACC",
+    motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="21" cy="21" r="10"/><path d="M28 28l22 22M42 42l6 6M38 47l5 5"/><path d="M14 47l1.2 3.2L18.5 51l-3.3 1.2L14 55l-1.2-2.8L9.5 51l3.3-.8z" fill="currentColor" stroke="none"/></svg>',
+    msgs:[
+      "閉じていたものが開く日。しまい込んだ書類、連絡していない相手、後回しの用事——鍵はそのあたりにあります。",
+      "知りたいことに、思いがけない筋道から答えが来ます。人の話は、最後まで聞いてみてください。",
+      "秘密めいたことに触れる日。面白がるのはいいけれど、広げないほうが身のためです。"
+    ],
+    love:["相手の意外な一面が見えます。","思い込みを、いちど外してみて。","連絡の理由は、あとから分かります。"],
+    work:["解決の糸口は過去の資料に。","人に聞いたほうが早い日。","小さな違和感を放置しないで。"],
+    health:["気になる不調は早めに相談を。","姿勢を整えるだけで軽くなります。","甘いものはほどほどに。"],
+    colors:[{n:"銀鼠",c:"#B9BAB6"},{n:"濃紫",c:"#5B4B7A"},{n:"山吹色",c:"#DFAE4E"}],
+    items:["鍵","古い写真","しまい込んでいた器"]
+  },
+  {
+    name:"望遠鏡", yomi:"BOUENKYOU", kw:"遠くを見る", themes:["travel","mystery"], tint:"#101838", deep:"#4A6ADC",
+    motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M9 27l27-12.5 6.5 12.5-27 12.5z"/><path d="M36 14.5L47 19l-4.5 11"/><path d="M22 33l4 19M31 52H17"/><path d="M50 8l1.3 3.4L55 13l-3.7 1.3L50 18l-1.3-3.7L45 13l3.7-1.6z" fill="currentColor" stroke="none"/></svg>',
+    msgs:[
+      "視野が広がる日。近くのことで気を揉むより、行ってみたい場所や、会いたい人を思い浮かべてみてください。",
+      "まだ知らない世界の話が、あなたを元気にします。本でも、人の土産話でも構いません。",
+      "見えないものを見ようとする一日。答えが出なくても、眺めているだけで気持ちは晴れていきます。"
+    ],
+    love:["離れている人ほど、想いが届きます。","焦らず、長い目で。","共通の話題が縁をつくります。"],
+    work:["先の予定を組んでおくと吉。","専門外の話にヒントがあります。","数字より、流れを見て。"],
+    health:["遠くを見て、目をゆるめて。","歩幅を少し大きく。","窓を開けて空気を入れ替えて。"],
+    colors:[{n:"夜空色",c:"#2E3A66"},{n:"星白",c:"#E9E7DE"},{n:"金色",c:"#D8B26A"}],
+    items:["地図","双眼鏡","旅の写真"]
+  },
+  {
+    name:"花束", yomi:"HANATABA", kw:"ひとの縁", themes:["love","family"], tint:"#2A1230", deep:"#C4608A",
+    motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><g><circle cx="20" cy="11.4" r="3.2"/><circle cx="24.4" cy="14.6" r="3.2"/><circle cx="22.7" cy="19.7" r="3.2"/><circle cx="17.3" cy="19.7" r="3.2"/><circle cx="15.6" cy="14.6" r="3.2"/><circle cx="20" cy="16" r="2"/></g><g><circle cx="40" cy="11.4" r="3.2"/><circle cx="44.4" cy="14.6" r="3.2"/><circle cx="42.7" cy="19.7" r="3.2"/><circle cx="37.3" cy="19.7" r="3.2"/><circle cx="35.6" cy="14.6" r="3.2"/><circle cx="40" cy="16" r="2"/></g><g><circle cx="30" cy="23.4" r="3.2"/><circle cx="34.4" cy="26.6" r="3.2"/><circle cx="32.7" cy="31.7" r="3.2"/><circle cx="27.3" cy="31.7" r="3.2"/><circle cx="25.6" cy="26.6" r="3.2"/><circle cx="30" cy="28" r="2"/></g><path d="M20 23l7 17M40 23l-7 17M30 35v5"/><path d="M18 41h24l-3.5 11h-17z"/><path d="M20.5 46h19"/></svg>',
+    msgs:[
+      "人からもらうもののある日。物でなくても、言葉や気遣いという形で届きます。素直に喜んでください。",
+      "集まりや誘いに縁があります。少し面倒でも、顔を出したほうが良い一日です。",
+      "誰かを思って選ぶ時間が、あなた自身を明るくします。贈るつもりで動いてみてください。"
+    ],
+    love:["褒め言葉を惜しまないで。","並んで歩く時間をつくって。","小さな贈りものが効きます。"],
+    work:["感謝を伝えると、次が回ってきます。","紹介や口添えに恵まれます。","ひとりより、みんなで動く日。"],
+    health:["よく笑うことが養生になります。","食卓をにぎやかに。","香りのあるもので気分を上げて。"],
+    colors:[{n:"薔薇色",c:"#D08FA4"},{n:"若草色",c:"#93B87C"},{n:"乳白色",c:"#F1EDE4"}],
+    items:["一輪の花","好きな香り","手土産"]
+  },
+  {
+    name:"帆船", yomi:"HANSEN", kw:"旅立つ", themes:["travel","work"], tint:"#0B1F34", deep:"#2E92BE",
+    motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M30 7v31"/><path d="M30 12l15 24H30z"/><path d="M27 17L14 36h13z"/><path d="M8 41h44l-6.5 11H14.5z"/><path d="M48 8l1.2 3.2L52.5 12l-3.3 1.2L48 16l-1.2-2.8L43.5 12l3.3-.8z" fill="currentColor" stroke="none"/></svg>',
+    msgs:[
+      "同じ場所に留まらなくていい日。予定を変える、道を変える。それだけで景色が変わります。",
+      "長く続けてきたことを、いちど外から眺めてみてください。続けるも辞めるも、あなたが決めていいのです。",
+      "見送る側にも、送り出される側にもなり得る日。どちらでも、寂しさより先に清々しさが来ます。"
+    ],
+    love:["別れ話より、仕切り直しの日。","相手の自由も尊重して。","一緒に出かけると進みます。"],
+    work:["環境を変える相談に良い日。","引き継ぎや整理がはかどります。","勢いに任せて大丈夫。"],
+    health:["いつもと違う道を歩いて。","海や川のそばへ。","荷物を軽くすると、体も軽くなります。"],
+    colors:[{n:"藍色",c:"#33507E"},{n:"帆白",c:"#EDE9DE"},{n:"珊瑚色",c:"#DE9179"}],
+    items:["時刻表","軽いかばん","使いかけの切符"]
+  },
+  {
+    name:"木漏れ日", yomi:"KOMOREBI", kw:"たのしむ", themes:["humor","health"], tint:"#241A12", deep:"#D8A63E",
+    motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="30" cy="24" r="10"/><path d="M30 5v6M30 37v5M11 24h6M43 24h6M16 10l4.5 4.5M44 10l-4.5 4.5"/><path d="M12 50c9-7 27-7 36 0"/></svg>',
+    msgs:[
+      "肩の力が抜ける日。おかしなこと、くだらないことを笑えるうちは大丈夫、というお守りのような一日です。",
+      "予定どおりにいかないことがあっても、それが今日の面白さになります。まあいいか、と言ってみてください。",
+      "日常のなかに、小さな良いことが三つ隠れています。見つけたぶんだけ、今日は上向きます。"
+    ],
+    love:["笑わせてくれる人を大切に。","気取らないほうが好かれます。","軽口が距離を縮めます。"],
+    work:["息抜きが効率を上げます。","雑談から良い話が出ます。","気負わず、いつも通りで十分。"],
+    health:["よく笑い、よく食べる日。","陽の当たる場所で少し休んで。","気にしすぎないことが薬。"],
+    colors:[{n:"木洩れ日色",c:"#E7C766"},{n:"苔色",c:"#8A9B6E"},{n:"生成り色",c:"#EFE7D6"}],
+    items:["甘いおやつ","帽子","一枚の葉っぱ"]
+  },
+  {
+    name:"星時計", yomi:"HOSHIDOKEI", kw:"時を待つ", themes:["life","love"], tint:"#1A1440", deep:"#8E72D8",
+    motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="30" cy="31" r="20"/><path d="M30 31V19M30 31l9 7"/><path d="M30 5v5M30 52v5M5 31h5M50 31h5"/><circle cx="30" cy="31" r="2.2" fill="currentColor" stroke="none"/><path d="M50 9l1.2 3.2L54.5 13l-3.3 1.2L50 17l-1.2-2.8L45.5 13l3.3-.8z" fill="currentColor" stroke="none"/></svg>',
+    msgs:[
+      "急いても進まないことがあります。今日は熟すのを待つ日。待つことも、立派に前へ進んでいます。",
+      "タイミングが揃いはじめています。焦って動くより、来たときにすぐ動ける支度をしておいてください。",
+      "過去の選択が、いま形になろうとしています。あのときの自分を、少し褒めてあげてください。"
+    ],
+    love:["返事を急がせないで。","時間が味方する関係です。","記念日を思い出してみて。"],
+    work:["結論は明日に持ち越して正解。","締切をもういちど確認して。","地道な作業が実を結びます。"],
+    health:["食事の時間を一定に。","就寝時刻を決めてしまって。","焦りが体に出やすい日。ゆっくりと。"],
+    colors:[{n:"濃紺",c:"#2E3A66"},{n:"金色",c:"#D8B26A"},{n:"白練",c:"#F2EFE7"}],
+    items:["腕時計","カレンダー","温かい湯たんぽ"]
+  }
+];
+
+/* 作品データ（works.json が読めればそちらで上書きされます） */
+let WORKS = [
+  { title:"小説『薔薇のノクターン』高見 純代", url:"https://renaissance-media.jp/articles/-/27482", theme:"love" },
+  { title:"小説『不可解な恋』夜久 珠姫", url:"https://renaissance-media.jp/articles/-/26619", theme:"love" },
+  { title:"小説『夢を叶えた、バツイチ香子と最強の恋男』武 きき", url:"https://renaissance-media.jp/articles/-/22069", theme:"love" },
+  { title:"小説『火点し時』順菜", url:"https://renaissance-media.jp/articles/-/25582", theme:"love" },
+  { title:"健康・暮らし・子育て『おとこと女』澤村 涼一", url:"https://renaissance-media.jp/articles/-/27328", theme:"love" },
+  { title:"エッセイ『母が母でなくなった日』英井 創", url:"https://renaissance-media.jp/articles/-/27063", theme:"family" },
+  { title:"エッセイ『犬のバトン』竹本 祐子", url:"https://renaissance-media.jp/articles/-/19404", theme:"family" },
+  { title:"エッセイ『心に咲いた向日葵』丸山 珠輝", url:"https://renaissance-media.jp/articles/-/21219", theme:"life" },
+  { title:"エッセイ『振り子の指す方へ』山口 ゆり子", url:"https://renaissance-media.jp/articles/-/25282", theme:"life" },
+  { title:"特集『227日後の奇跡』など、いま読まれている重版作品", url:"https://renaissance-media.jp/articles/-/24797", theme:"life" },
+  { title:"小説『さまよう記憶の行方』夢崎 秀弥", url:"https://renaissance-media.jp/articles/-/27375", theme:"mystery" },
+  { title:"小説『鬼がくれた奇跡』間﨑 由美", url:"https://renaissance-media.jp/articles/-/27293", theme:"mystery" },
+  { title:"小説『超能力探偵 河原賽子』春山 大樹", url:"https://renaissance-media.jp/articles/-/23251", theme:"mystery" },
+  { title:"小説『別嬪9人』矢野 龍王", url:"https://renaissance-media.jp/articles/-/27134", theme:"mystery" },
+  { title:"歴史・地理『卑弥呼と古事記と日本書紀』吉木 正實", url:"https://renaissance-media.jp/articles/-/27327", theme:"mystery" },
+  { title:"特集『その経験がきっと誰かの役に立つ』闘病・医療系作品15選", url:"https://renaissance-media.jp/articles/-/23863", theme:"health" },
+  { title:"小説『いつか海の見える街へ』須賀 渚", url:"https://renaissance-media.jp/articles/-/27470", theme:"travel" }
+];
+
+/* ============================================================
+   日付＋読み手ごとのシード
+   ============================================================ */
+function jstToday(){
+  const now = new Date();
+  const jst = new Date(now.getTime() + (now.getTimezoneOffset() + 540) * 60000);
+  return { y: jst.getFullYear(), m: jst.getMonth() + 1, d: jst.getDate(), wd: jst.getDay() };
+}
+function xmur3(str){
+  let h = 1779033703 ^ str.length;
+  for (let i = 0; i < str.length; i++){
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return function(){
+    h = Math.imul(h ^ (h >>> 16), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    h ^= h >>> 16;
+    return h >>> 0;
+  };
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* 読み手ごとの目印。
+   初回訪問時にランダムな文字列をつくってブラウザに保存し、日付と混ぜてシードにします。
+   → 同じ人は今日1日ずっと同じ結果／人（ブラウザ）が変われば違う結果。
+   保存できない環境（プライベートモード等）では、その場かぎりのIDを使います。 */
+function visitorId(){
+  var KEY = "glo_hoshiyomi_uid";
+  try{
+    var v = window.localStorage.getItem(KEY);
+    if (!v){
+      v = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+      window.localStorage.setItem(KEY, v);
+    }
+    return v;
+  }catch(e){
+    return Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+  }
+}
+
+const T = jstToday();
+const DATE_KEY = T.y + "-" + String(T.m).padStart(2,"0") + "-" + String(T.d).padStart(2,"0");
+const rand = mulberry32(xmur3("glo-hoshiyomi-" + DATE_KEY + "-" + visitorId())());
+const pick = (arr) => arr[Math.floor(rand() * arr.length)];
+
+function score(){
+  const r = rand();
+  if (r < 0.10) return 2;
+  if (r < 0.42) return 3;
+  if (r < 0.80) return 4;
+  return 5;
+}
+function starHtml(n){
+  let s = "";
+  for (let i = 1; i <= 5; i++) s += (i <= n ? "★" : '<span class="off">★</span>');
+  return s;
+}
+
+const card = CARDS[Math.floor(rand() * CARDS.length)];
+const message = pick(card.msgs);
+const sLove = score(), sWork = score(), sHealth = score();
+/* 総合運は3つの平均。ばらばらの数字にならないように */
+const sTotal = Math.min(5, Math.max(2, Math.round((sLove + sWork + sHealth) / 3)));
+const cLove = pick(card.love), cWork = pick(card.work), cHealth = pick(card.health);
+const luckyColor = pick(card.colors);
+const luckyItem = pick(card.items);
+let pickIndex = Math.floor(rand() * 1000);
+
+/* おすすめの順番をつくる。
+   はじめに第1希望のテーマ、次に第2希望、そのあとに残り全部。
+   同じ作品が二度出ないように並べるので、
+   「別の作品を」を押せば必ず次の1本に進みます。 */
+function workPool(){
+  const seen = {}, pool = [];
+  const add = function(list){
+    list.forEach(function(w){
+      if (w && w.url && !seen[w.url]){ seen[w.url] = 1; pool.push(w); }
+    });
+  };
+  add(WORKS.filter(function(w){ return w.theme === card.themes[0]; }));
+  add(WORKS.filter(function(w){ return w.theme === card.themes[1]; }));
+  add(WORKS);
+  return pool;
+}
+
+function chooseWork(offset){
+  const pool = workPool();
+  if (!pool.length) return null;
+  /* その日の1本目は、第1希望のテーマの中から選ぶ */
+  const firstCount = Math.max(1, WORKS.filter(function(w){ return w.theme === card.themes[0]; }).length);
+  const start = pickIndex % Math.min(firstCount, pool.length);
+  const w = pool[(start + offset) % pool.length];
+  return { work: w, theme: w.theme, total: pool.length };
+}
+
+/* ============================================================
+   描画
+   ============================================================ */
+const $ = (id) => document.getElementById(id);
+const WD = ["日","月","火","水","木","金","土"];
+$("dateLabel").textContent = T.y + "年" + T.m + "月" + T.d + "日（" + WD[T.wd] + "）";
+
+$("motif").innerHTML = card.motif;
+$("cardName").textContent = card.name;
+$("cardYomi").textContent = card.yomi;
+$("cardKw").textContent = card.kw;
+$("front").style.setProperty("--tint", card.tint);
+$("front").style.setProperty("--deep", card.deep);
+
+let offset = 0;
+function renderWork(){
+  const r = chooseWork(offset);
+  if (!r) return;
+  $("pickLead").textContent = THEME_LEAD[r.theme] || THEME_LEAD.life;
+  $("workTitle").textContent = r.work.title;
+  $("workNote").textContent = r.work.note || "";
+  $("workLink").href = r.work.url;
+  /* 作品が1本しかないときは、送るところがないのでボタンを隠す */
+  $("againBtn").hidden = (r.total <= 1);
+}
+
+function renderResult(){
+  $("message").textContent = message;
+  $("starTotal").innerHTML = starHtml(sTotal);
+  $("starLove").innerHTML = starHtml(sLove);
+  $("starWork").innerHTML = starHtml(sWork);
+  $("starHealth").innerHTML = starHtml(sHealth);
+  $("cmtLove").textContent = cLove;
+  $("cmtWork").textContent = cWork;
+  $("cmtHealth").textContent = cHealth;
+  $("swatch").style.background = luckyColor.c;
+  $("colorName").textContent = luckyColor.n;
+  $("itemName").textContent = luckyItem;
+  setupShareLinks();
+  renderWork();
+}
+
+let drawn = false;
+function draw(){
+  if (drawn) return;
+  drawn = true;
+  $("card").classList.add("spun");
+  $("card").setAttribute("aria-label", "今日のカード：" + card.name);
+  $("drawBtn").style.display = "none";
+  $("drawNote").textContent = "この1枚は、今日1日あなたに同じ結果が出ます。";
+  setTimeout(function(){
+    renderResult();
+    const res = $("result");
+    res.hidden = false;
+    res.classList.add("reveal");
+  }, 1200);
+}
+
+$("drawBtn").addEventListener("click", draw);
+$("card").addEventListener("click", draw);
+$("card").addEventListener("keydown", function(e){
+  if (e.key === "Enter" || e.key === " "){ e.preventDefault(); draw(); }
+});
+$("againBtn").addEventListener("click", function(){
+  offset++;
+  renderWork();
+  $("workLink").animate(
+    [{opacity:0, transform:"translateY(8px)"},{opacity:1, transform:"none"}],
+    {duration:420, easing:"ease"}
+  );
+});
+
+/* ============================================================
+   閉じる
+   ============================================================ */
+$("closeBtn").addEventListener("click", function(){
+  const res = $("result");
+  res.hidden = true;
+  res.classList.remove("reveal");
+  $("card").classList.remove("spun");
+  $("card").setAttribute("aria-label", "カードをめくって今日の運勢を見る");
+  $("drawBtn").style.display = "";
+  $("drawNote").textContent = "占いは1日1回。今日のあなたに届いた1枚は、何度開いても同じです。";
+  drawn = false;
+  try{ window.scrollTo({ top:0, behavior:"smooth" }); }catch(e){ window.scrollTo(0,0); }
+});
+
+/* ============================================================
+   シェア
+   ============================================================ */
+/* 記事のURL。埋め込む記事が決まったら、ここを書き換えてください。
+   iframe の src に ?u=記事URL を付けても指定できます。 */
+const SHARE_URL = "https://renaissance-media.jp/";
+const HASHTAG   = "星よみ今日の一枚";
+
+function shareUrl(){
+  try{
+    const q = new URLSearchParams(location.search).get("u");
+    if (q) return q;
+    const r = document.referrer;
+    if (r && r.indexOf("renaissance-media.jp") >= 0) return r.split("#")[0];
+  }catch(e){}
+  return SHARE_URL;
+}
+function shareText(){
+  return "今日の1枚は〈" + card.name + "〉。" + card.kw + "、という日でした。\n"
+       + "ラッキーカラーは" + luckyColor.n + "、ラッキーアイテムは" + luckyItem + "。";
+}
+
+function setupShareLinks(){
+  const u = encodeURIComponent(shareUrl());
+  const t = encodeURIComponent(shareText());
+  $("shareX").href = "https://twitter.com/intent/tweet?text=" + t + "&url=" + u +
+                     "&hashtags=" + encodeURIComponent(HASHTAG + ",ゴールドライフオンライン");
+  $("shareLine").href = "https://social-plugins.line.me/lineit/share?url=" + u + "&text=" + t;
+}
+
+/* works.json があれば差し替える（同じフォルダに置くだけ） */
+fetch("works.json", { cache: "no-store" })
+  .then(function(r){ return r.ok ? r.json() : null; })
+  .then(function(j){
+    if (j && Array.isArray(j.works) && j.works.length){
+      WORKS = j.works;
+      if (drawn) renderWork();
+    }
+  })
+  .catch(function(){ /* 読めなければ内蔵データのまま */ });
+</script>
+</body>
+</html>
