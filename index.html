@@ -98,14 +98,14 @@ body{
   width:clamp(212px,64vw,248px);
   aspect-ratio:5/7.4;
   transform-style:preserve-3d;
-  transition:transform 1.8s cubic-bezier(.2,.75,.2,1), width .7s ease .95s;
+  transition:transform 2.5s cubic-bezier(.15,.72,.15,1), width .7s ease 1.9s;
   cursor:pointer;
   animation:float 5.5s ease-in-out infinite;
 }
 .card:focus-visible{outline:3px solid var(--yellow);outline-offset:10px;border-radius:18px}
 @keyframes float{0%,100%{translate:0 0}50%{translate:0 -9px}}
 .card.spun{
-  transform:rotateY(900deg);
+  transform:rotateY(1620deg);
   animation:none;
   width:clamp(176px,52vw,204px);
   cursor:default;
@@ -717,7 +717,7 @@ const CARDS = [
     love:["連絡を待つより、待たせる余裕を。","近しい人の沈黙に、深い意味はありません。","昔の縁が、やわらかく思い出される日。"],
     work:["前倒しより、丁寧さが評価されます。","ひとつ手放すと、全体が回りはじめます。","区切りをつけるのに向いた一日。"],
     health:["睡眠をいつもより少し長めに。","目を休ませる時間を意識して。","温かい飲みもので、内側から整えて。"],
-    colors:[{n:"藍鼠",c:"#4A5A73"},{n:"象牙色",c:"#EDE4D2"},{n:"淡藤",c:"#B7B2DA"}],
+    colors:[{n:"紺色",c:"#24386E"},{n:"白",c:"#FFFFFF"},{n:"グレー",c:"#9AA0A6"}],
     items:["読みかけの本","白いハンカチ","湯呑み"]
   },
   {
@@ -731,7 +731,7 @@ const CARDS = [
     love:["あなたから一言、が効く日。","距離が縮まる合図が出ています。","素直な言葉ほど、よく届きます。"],
     work:["頼まれごとは引き受けたほうが得。","決断は午前中に。","新しいやり方を試してみて。"],
     health:["少し歩くと、頭が軽くなります。","深呼吸を三回。それだけで整います。","外の空気を吸いに出てみて。"],
-    colors:[{n:"若草色",c:"#93C0A2"},{n:"空色",c:"#8FB4D9"},{n:"金糸雀色",c:"#E7C766"}],
+    colors:[{n:"緑",c:"#4CA85F"},{n:"空色",c:"#A8D3F0"},{n:"黄色",c:"#F2C744"}],
     items:["歩きやすい靴","新しいペン","小さな鏡"]
   },
   {
@@ -745,7 +745,7 @@ const CARDS = [
     love:["ありがとう、を口に出す日。","相手の話をさえぎらないで。","短い連絡が、長い沈黙より効きます。"],
     work:["報告は早めに、ていねいに。","文章にすると、話が通ります。","聞き役に回ると信頼が増します。"],
     health:["声を出す時間をつくって。","肩と首をゆるめて。","人と話すことが、いちばんの薬。"],
-    colors:[{n:"生成り色",c:"#EFE7D6"},{n:"桜鼠",c:"#D8BFC4"},{n:"藤紫",c:"#A9A3D8"}],
+    colors:[{n:"クリーム色",c:"#F6EFD8"},{n:"ピンク",c:"#F090AF"},{n:"紫",c:"#8A6BC0"}],
     items:["便箋","切手","お気に入りのカップ"]
   },
   {
@@ -759,7 +759,7 @@ const CARDS = [
     love:["察してもらおうとしないで。","一歩引くと、相手がよく見えます。","長く続く縁ほど、静かです。"],
     work:["優先順位を書き出してみて。","断る勇気が、時間を生みます。","決めたことは変えないほうが吉。"],
     health:["夜更かしは控えめに。","目の疲れに気をつけて。","規則正しさが、いちばん効きます。"],
-    colors:[{n:"群青",c:"#3C5A8C"},{n:"白鼠",c:"#DCD8CE"},{n:"琥珀色",c:"#D8A05A"}],
+    colors:[{n:"青",c:"#2F6FBF"},{n:"白",c:"#FFFFFF"},{n:"オレンジ",c:"#EE8B3C"}],
     items:["眼鏡拭き","手帳","灯りの下の読書"]
   },
   {
@@ -773,7 +773,7 @@ const CARDS = [
     love:["はじめて会う人に、良い予感。","関係を仕切り直すなら今日。","小さな親切から始まります。"],
     work:["準備に時間をかけて正解。","新しい役割に縁があります。","まず名前をつけると進みます。"],
     health:["旬のものを食べて。","朝の光を浴びる時間を。","軽いストレッチから。"],
-    colors:[{n:"若葉色",c:"#93B87C"},{n:"桃花色",c:"#E3B7B0"},{n:"生成り色",c:"#EFE7D6"}],
+    colors:[{n:"黄緑",c:"#9BC85A"},{n:"ピンク",c:"#F090AF"},{n:"ベージュ",c:"#E3D2B4"}],
     items:["種や苗","新しいノート","果物"]
   },
   {
@@ -787,7 +787,7 @@ const CARDS = [
     love:["甘えるほうが、うまくいきます。","一緒に過ごす時間そのものが答え。","相手の疲れにも気づいてあげて。"],
     work:["休憩を挟むほど、はかどります。","抱え込まず、分けてしまって。","今日は完璧を目指さないで。"],
     health:["水分をいつもより多めに。","湯船にゆっくり。","早めに横になる日。"],
-    colors:[{n:"浅葱色",c:"#7FB6C2"},{n:"乳白色",c:"#F1EDE4"},{n:"露草色",c:"#6E8FC6"}],
+    colors:[{n:"水色",c:"#7FC4E0"},{n:"白",c:"#FFFFFF"},{n:"青",c:"#2F6FBF"}],
     items:["水のボトル","入浴剤","やわらかいタオル"]
   },
   {
@@ -801,7 +801,7 @@ const CARDS = [
     love:["相手の意外な一面が見えます。","思い込みを、いちど外してみて。","連絡の理由は、あとから分かります。"],
     work:["解決の糸口は過去の資料に。","人に聞いたほうが早い日。","小さな違和感を放置しないで。"],
     health:["気になる不調は早めに相談を。","姿勢を整えるだけで軽くなります。","甘いものはほどほどに。"],
-    colors:[{n:"銀鼠",c:"#B9BAB6"},{n:"濃紫",c:"#5B4B7A"},{n:"山吹色",c:"#DFAE4E"}],
+    colors:[{n:"シルバー",c:"#BFC5CB"},{n:"紫",c:"#8A6BC0"},{n:"黒",c:"#2B2B2B"}],
     items:["鍵","古い写真","しまい込んでいた器"]
   },
   {
@@ -815,7 +815,7 @@ const CARDS = [
     love:["離れている人ほど、想いが届きます。","焦らず、長い目で。","共通の話題が縁をつくります。"],
     work:["先の予定を組んでおくと吉。","専門外の話にヒントがあります。","数字より、流れを見て。"],
     health:["遠くを見て、目をゆるめて。","歩幅を少し大きく。","窓を開けて空気を入れ替えて。"],
-    colors:[{n:"夜空色",c:"#2E3A66"},{n:"星白",c:"#E9E7DE"},{n:"金色",c:"#D8B26A"}],
+    colors:[{n:"紺色",c:"#24386E"},{n:"金色",c:"#D4AF37"},{n:"白",c:"#FFFFFF"}],
     items:["地図","双眼鏡","旅の写真"]
   },
   {
@@ -829,7 +829,7 @@ const CARDS = [
     love:["褒め言葉を惜しまないで。","並んで歩く時間をつくって。","小さな贈りものが効きます。"],
     work:["感謝を伝えると、次が回ってきます。","紹介や口添えに恵まれます。","ひとりより、みんなで動く日。"],
     health:["よく笑うことが養生になります。","食卓をにぎやかに。","香りのあるもので気分を上げて。"],
-    colors:[{n:"薔薇色",c:"#D08FA4"},{n:"若草色",c:"#93B87C"},{n:"乳白色",c:"#F1EDE4"}],
+    colors:[{n:"ピンク",c:"#F090AF"},{n:"赤",c:"#D8443C"},{n:"緑",c:"#4CA85F"}],
     items:["一輪の花","好きな香り","手土産"]
   },
   {
@@ -843,7 +843,7 @@ const CARDS = [
     love:["別れ話より、仕切り直しの日。","相手の自由も尊重して。","一緒に出かけると進みます。"],
     work:["環境を変える相談に良い日。","引き継ぎや整理がはかどります。","勢いに任せて大丈夫。"],
     health:["いつもと違う道を歩いて。","海や川のそばへ。","荷物を軽くすると、体も軽くなります。"],
-    colors:[{n:"藍色",c:"#33507E"},{n:"帆白",c:"#EDE9DE"},{n:"珊瑚色",c:"#DE9179"}],
+    colors:[{n:"紺色",c:"#24386E"},{n:"水色",c:"#7FC4E0"},{n:"赤",c:"#D8443C"}],
     items:["時刻表","軽いかばん","使いかけの切符"]
   },
   {
@@ -857,7 +857,7 @@ const CARDS = [
     love:["笑わせてくれる人を大切に。","気取らないほうが好かれます。","軽口が距離を縮めます。"],
     work:["息抜きが効率を上げます。","雑談から良い話が出ます。","気負わず、いつも通りで十分。"],
     health:["よく笑い、よく食べる日。","陽の当たる場所で少し休んで。","気にしすぎないことが薬。"],
-    colors:[{n:"木洩れ日色",c:"#E7C766"},{n:"苔色",c:"#8A9B6E"},{n:"生成り色",c:"#EFE7D6"}],
+    colors:[{n:"黄色",c:"#F2C744"},{n:"緑",c:"#4CA85F"},{n:"ベージュ",c:"#E3D2B4"}],
     items:["甘いおやつ","帽子","一枚の葉っぱ"]
   },
   {
@@ -871,7 +871,7 @@ const CARDS = [
     love:["返事を急がせないで。","時間が味方する関係です。","記念日を思い出してみて。"],
     work:["結論は明日に持ち越して正解。","締切をもういちど確認して。","地道な作業が実を結びます。"],
     health:["食事の時間を一定に。","就寝時刻を決めてしまって。","焦りが体に出やすい日。ゆっくりと。"],
-    colors:[{n:"濃紺",c:"#2E3A66"},{n:"金色",c:"#D8B26A"},{n:"白練",c:"#F2EFE7"}],
+    colors:[{n:"紺色",c:"#24386E"},{n:"金色",c:"#D4AF37"},{n:"茶色",c:"#8A5A3B"}],
     items:["腕時計","カレンダー","温かい湯たんぽ"]
   }
 ];
@@ -1007,12 +1007,16 @@ const $ = (id) => document.getElementById(id);
 const WD = ["日","月","火","水","木","金","土"];
 $("dateLabel").textContent = T.y + "年" + T.m + "月" + T.d + "日（" + WD[T.wd] + "）";
 
-$("motif").innerHTML = card.motif;
-$("cardName").textContent = card.name;
-$("cardYomi").textContent = card.yomi;
-$("cardKw").textContent = card.kw;
-$("front").style.setProperty("--tint", card.tint);
-$("front").style.setProperty("--deep", card.deep);
+/* カードの表を1枚ぶん描く（ぱらぱらめくる演出でも使います） */
+function setFront(c){
+  $("motif").innerHTML = c.motif;
+  $("cardName").textContent = c.name;
+  $("cardYomi").textContent = c.yomi;
+  $("cardKw").textContent = c.kw;
+  $("front").style.setProperty("--tint", c.tint);
+  $("front").style.setProperty("--deep", c.deep);
+}
+setFront(card);
 
 let offset = 0;
 function renderWork(){
@@ -1043,6 +1047,18 @@ function renderResult(){
 }
 
 let drawn = false;
+let shuffleTimer = null;
+/* まわっているあいだに次々と別のカードが見え、だんだんゆっくりになって
+   最後の1枚で止まる。めくりの間隔（ミリ秒）を少しずつ伸ばしています。 */
+const FLIP_STEPS = [110, 110, 120, 130, 145, 165, 190, 220, 260, 310, 380];
+
+function showResult(){
+  renderResult();
+  const res = $("result");
+  res.hidden = false;
+  res.classList.add("reveal");
+}
+
 function draw(){
   if (drawn) return;
   drawn = true;
@@ -1050,12 +1066,32 @@ function draw(){
   $("card").setAttribute("aria-label", "今日のカード：" + card.name);
   $("drawBtn").style.display = "none";
   $("drawNote").textContent = "この1枚は、今日1日あなたに同じ結果が出ます。";
-  setTimeout(function(){
-    renderResult();
-    const res = $("result");
-    res.hidden = false;
-    res.classList.add("reveal");
-  }, 1200);
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce){
+    setFront(card);
+    setTimeout(showResult, 300);
+    return;
+  }
+
+  /* 今日のカード以外を、順ぐりにめくって見せる */
+  const others = CARDS.filter(function(c){ return c !== card; });
+  for (let i = others.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    const t = others[i]; others[i] = others[j]; others[j] = t;
+  }
+
+  let i = 0;
+  (function step(){
+    if (i < FLIP_STEPS.length){
+      setFront(others[i % others.length]);
+      shuffleTimer = setTimeout(step, FLIP_STEPS[i]);
+      i++;
+    } else {
+      setFront(card);                       /* ここで今日の1枚に決まる */
+      shuffleTimer = setTimeout(showResult, 620);
+    }
+  })();
 }
 
 $("drawBtn").addEventListener("click", draw);
@@ -1076,6 +1112,8 @@ $("againBtn").addEventListener("click", function(){
    閉じる
    ============================================================ */
 $("closeBtn").addEventListener("click", function(){
+  if (shuffleTimer){ clearTimeout(shuffleTimer); shuffleTimer = null; }
+  setFront(card);
   const res = $("result");
   res.hidden = true;
   res.classList.remove("reveal");
