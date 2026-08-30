@@ -262,12 +262,15 @@ body{
 
 /* 星取り */
 .scores{display:grid;grid-template-columns:1fr;gap:13px}
-.score{display:grid;grid-template-columns:66px auto;gap:3px 12px;align-items:center}
+.score{display:grid;grid-template-columns:84px auto;gap:3px 12px;align-items:center}
 .score .sname{font-size:13.5px;font-weight:700;letter-spacing:.06em;color:var(--violet)}
 .score .stars{font-size:16px;letter-spacing:.14em;line-height:1}
 .score .scmt{grid-column:2;font-size:14px;color:var(--ink);line-height:1.7}
 .s-love .stars{color:var(--pink)}
+.s-family .stars{color:#E08A47}
+.s-social .stars{color:#4E9BC0}
 .s-work .stars{color:var(--violet-soft)}
+.s-money .stars{color:#C2951F}
 .s-health .stars{color:var(--green)}
 .stars .off{color:rgba(91,74,158,.22)}
 
@@ -344,6 +347,43 @@ body{
   color:var(--violet);margin:14px 0 0;text-align:center;
 }
 .shint b{color:var(--ink)}
+
+/* この占いについて */
+.aboutbtn{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  width:100%;margin-top:2px;min-height:50px;padding:0 18px;
+  font-family:var(--sans);font-size:14.5px;font-weight:700;color:#fff;
+  background:rgba(255,255,255,.08);
+  border:2px dashed rgba(255,255,255,.5);border-radius:999px;cursor:pointer;
+  transition:background .2s ease,border-color .2s ease;
+}
+.aboutbtn:hover{background:rgba(255,255,255,.16);border-color:#fff}
+.aboutbtn:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.aboutbtn .q{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;flex:none;border-radius:50%;
+  background:var(--yellow);color:var(--ink);font-size:14px;line-height:1;
+}
+
+.aboutview{margin-top:26px}
+.aboutview[hidden]{display:none}
+.atitle{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(21px,5.6vw,26px);color:var(--white);
+  margin:0 0 16px;text-align:center;text-shadow:0 3px 0 rgba(70,55,129,.35);
+}
+.abody{
+  background:var(--cream);color:var(--ink);
+  border:2px solid var(--violet-deep);border-radius:18px;
+  box-shadow:0 6px 0 rgba(70,55,129,.55);
+  padding:20px 18px;font-size:14.5px;line-height:1.95;
+}
+.abody p{margin:0 0 14px}
+.abody b{color:var(--violet)}
+.anote{
+  border-top:2px dotted rgba(91,74,158,.35);padding-top:13px;
+  font-size:13.5px;color:var(--violet);margin-bottom:0;
+}
 
 .foot{
   text-align:center;font-family:var(--hand);font-size:13px;color:rgba(255,255,255,.9);
@@ -535,9 +575,21 @@ body{
           <span class="sname">恋愛運</span><span class="stars" id="starLove"></span>
           <span class="scmt" id="cmtLove"></span>
         </div>
+        <div class="score s-family">
+          <span class="sname">家族運</span><span class="stars" id="starFamily"></span>
+          <span class="scmt" id="cmtFamily"></span>
+        </div>
+        <div class="score s-social">
+          <span class="sname">人づきあい</span><span class="stars" id="starSocial"></span>
+          <span class="scmt" id="cmtSocial"></span>
+        </div>
         <div class="score s-work">
           <span class="sname">仕事運</span><span class="stars" id="starWork"></span>
           <span class="scmt" id="cmtWork"></span>
+        </div>
+        <div class="score s-money">
+          <span class="sname">金運</span><span class="stars" id="starMoney"></span>
+          <span class="scmt" id="cmtMoney"></span>
         </div>
         <div class="score s-health">
           <span class="sname">健康運</span><span class="stars" id="starHealth"></span>
@@ -601,12 +653,39 @@ body{
       </p>
     </div>
 
+    <button class="aboutbtn" id="aboutBtn" type="button">
+      <span class="q">?</span> この占いについて
+    </button>
+
+
     <p class="foot">
       次の1枚は、明日の朝に。<br>
       <a href="https://renaissance-media.jp/" target="_blank" rel="noopener">ゴールドライフオンラインの新着作品を見る</a>
     </p>
 
     <button class="close" id="closeBtn" type="button">今日の占いを閉じる</button>
+  </section>
+
+  <section class="aboutview" id="aboutView" hidden>
+    <h2 class="atitle">この占いについて</h2>
+    <div class="abody">
+        <p><b>1枚の決まり方</b>　その日の日付（日本時間）と、あなたの端末だけに残る番号から、
+        決まった手順で12枚のうち1枚を選んでいます。適当に変えているのではないので、
+        同じ日なら何度開いても同じ1枚。日付が変わると、また別の1枚が届きます。
+        同じ日でも、隣の人には違うカードが出ます。</p>
+
+        <p><b>6つの運勢</b>も同じ手順から決まり、総合運はその平均です。
+        おすすめの一作は、カードごとに決めた物語のテーマに合うものを、
+        ゴールドライフオンラインの公開中の作品から選んでいます。</p>
+
+        <p><b>12枚のカード</b>　月と栞（休む）／追い風（進む）／手紙（伝える）／灯台（見きわめる）／
+        芽ぶき（はじめる）／泉（うるおす）／銀の鍵（ひらく）／望遠鏡（遠くを見る）／花束（ひとの縁）／
+        帆船（旅立つ）／木漏れ日（たのしむ）／星時計（時を待つ）</p>
+
+        <p class="anote">お名前も生年月日もうかがいません。端末に残る番号のほかは何も記録していません。
+        占いは、背中を押してもらうためのもの。今日をどう過ごすかのきっかけにしてください。</p>
+      </div>
+    <button class="close" id="backBtn" type="button">占いの結果にもどる</button>
   </section>
 </div>
 
@@ -717,6 +796,9 @@ const CARDS = [
     love:["連絡を待つより、待たせる余裕を。","近しい人の沈黙に、深い意味はありません。","昔の縁が、やわらかく思い出される日。"],
     work:["前倒しより、丁寧さが評価されます。","ひとつ手放すと、全体が回りはじめます。","区切りをつけるのに向いた一日。"],
     health:["睡眠をいつもより少し長めに。","目を休ませる時間を意識して。","温かい飲みもので、内側から整えて。"],
+    money:["財布の中を整理する日。","衝動買いは明日に回して。","使わなかったものを手放すと巡ってきます。"],
+    family:["家の中を静かに整えて。","無理に集まらなくていい日。","古い写真を見返すと会話が生まれます。"],
+    social:["返事は明日でも大丈夫。","ひとりの時間を責めないで。","静かな人ほど、味方です。"],
     colors:[{n:"紺色",c:"#24386E"},{n:"白",c:"#FFFFFF"},{n:"グレー",c:"#9AA0A6"}],
     items:["読みかけの本","白いハンカチ","湯呑み"]
   },
@@ -731,6 +813,9 @@ const CARDS = [
     love:["あなたから一言、が効く日。","距離が縮まる合図が出ています。","素直な言葉ほど、よく届きます。"],
     work:["頼まれごとは引き受けたほうが得。","決断は午前中に。","新しいやり方を試してみて。"],
     health:["少し歩くと、頭が軽くなります。","深呼吸を三回。それだけで整います。","外の空気を吸いに出てみて。"],
+    money:["思い切って買うなら今日。","入ってくる話に耳を貸して。","小さな備えが、あとで効きます。"],
+    family:["家族の予定を先に決めると吉。","出かける相談がまとまります。","背中を押してあげる側に。"],
+    social:["誘いは受けたほうが得。","はじめての人とも打ち解けられます。","人の輪が広がる一日。"],
     colors:[{n:"緑",c:"#4CA85F"},{n:"空色",c:"#A8D3F0"},{n:"黄色",c:"#F2C744"}],
     items:["歩きやすい靴","新しいペン","小さな鏡"]
   },
@@ -745,6 +830,9 @@ const CARDS = [
     love:["ありがとう、を口に出す日。","相手の話をさえぎらないで。","短い連絡が、長い沈黙より効きます。"],
     work:["報告は早めに、ていねいに。","文章にすると、話が通ります。","聞き役に回ると信頼が増します。"],
     health:["声を出す時間をつくって。","肩と首をゆるめて。","人と話すことが、いちばんの薬。"],
+    money:["契約や書類の確認をていねいに。","もらいものに縁があります。","値段より、贈る気持ちを。"],
+    family:["近況を伝えるだけで喜ばれます。","遠くの家族に一本、連絡を。","言い忘れていたお礼を今日こそ。"],
+    social:["聞き役に回ると信頼されます。","誤解は今日中に解けます。","一言添えるだけで印象が変わります。"],
     colors:[{n:"クリーム色",c:"#F6EFD8"},{n:"ピンク",c:"#F090AF"},{n:"紫",c:"#8A6BC0"}],
     items:["便箋","切手","お気に入りのカップ"]
   },
@@ -759,6 +847,9 @@ const CARDS = [
     love:["察してもらおうとしないで。","一歩引くと、相手がよく見えます。","長く続く縁ほど、静かです。"],
     work:["優先順位を書き出してみて。","断る勇気が、時間を生みます。","決めたことは変えないほうが吉。"],
     health:["夜更かしは控えめに。","目の疲れに気をつけて。","規則正しさが、いちばん効きます。"],
+    money:["支出を書き出すと見えてきます。","うまい話は、いちど持ち帰って。","毎月の固定費を見直すのに良い日。"],
+    family:["家族の話は最後まで聞いて。","決めるのはあなたで構いません。","将来の相談に向いた一日。"],
+    social:["距離を置くのも思いやりです。","相談されたら、知っていることだけ。","八方美人にならなくて大丈夫。"],
     colors:[{n:"青",c:"#2F6FBF"},{n:"白",c:"#FFFFFF"},{n:"オレンジ",c:"#EE8B3C"}],
     items:["眼鏡拭き","手帳","灯りの下の読書"]
   },
@@ -773,6 +864,9 @@ const CARDS = [
     love:["はじめて会う人に、良い予感。","関係を仕切り直すなら今日。","小さな親切から始まります。"],
     work:["準備に時間をかけて正解。","新しい役割に縁があります。","まず名前をつけると進みます。"],
     health:["旬のものを食べて。","朝の光を浴びる時間を。","軽いストレッチから。"],
+    money:["新しい貯め方を試すなら今日。","小さな額から始めて。","欲しいものを書き出してみて。"],
+    family:["新しい習慣を、家族とひとつ。","子や孫の話に耳を傾けて。","食卓に旬のものを。"],
+    social:["はじめての人と縁があります。","習いごとの輪に良い予感。","名前を覚えてもらえる日。"],
     colors:[{n:"黄緑",c:"#9BC85A"},{n:"ピンク",c:"#F090AF"},{n:"ベージュ",c:"#E3D2B4"}],
     items:["種や苗","新しいノート","果物"]
   },
@@ -787,6 +881,9 @@ const CARDS = [
     love:["甘えるほうが、うまくいきます。","一緒に過ごす時間そのものが答え。","相手の疲れにも気づいてあげて。"],
     work:["休憩を挟むほど、はかどります。","抱え込まず、分けてしまって。","今日は完璧を目指さないで。"],
     health:["水分をいつもより多めに。","湯船にゆっくり。","早めに横になる日。"],
+    money:["自分をいたわることにお金を。","節約しすぎないで。","体にいいものへの出費は吉。"],
+    family:["甘えても許される日。","家族に頼ってみて。","誰かの手を借りると回ります。"],
+    social:["聞いてもらうだけで軽くなります。","無理に元気を装わないで。","やさしい人が、近くにいます。"],
     colors:[{n:"水色",c:"#7FC4E0"},{n:"白",c:"#FFFFFF"},{n:"青",c:"#2F6FBF"}],
     items:["水のボトル","入浴剤","やわらかいタオル"]
   },
@@ -801,6 +898,9 @@ const CARDS = [
     love:["相手の意外な一面が見えます。","思い込みを、いちど外してみて。","連絡の理由は、あとから分かります。"],
     work:["解決の糸口は過去の資料に。","人に聞いたほうが早い日。","小さな違和感を放置しないで。"],
     health:["気になる不調は早めに相談を。","姿勢を整えるだけで軽くなります。","甘いものはほどほどに。"],
+    money:["忘れていたお金が見つかりそう。","解約や見直しに良い日。","しまい込んだ書類を確認して。"],
+    family:["言えずにいたことが打ち明けられます。","昔の写真や手紙から話が広がります。","家族の意外な一面に気づきます。"],
+    social:["知らなかった一面が見えます。","うわさ話は広げないで。","久しぶりの人から連絡がありそう。"],
     colors:[{n:"シルバー",c:"#BFC5CB"},{n:"紫",c:"#8A6BC0"},{n:"黒",c:"#2B2B2B"}],
     items:["鍵","古い写真","しまい込んでいた器"]
   },
@@ -815,6 +915,9 @@ const CARDS = [
     love:["離れている人ほど、想いが届きます。","焦らず、長い目で。","共通の話題が縁をつくります。"],
     work:["先の予定を組んでおくと吉。","専門外の話にヒントがあります。","数字より、流れを見て。"],
     health:["遠くを見て、目をゆるめて。","歩幅を少し大きく。","窓を開けて空気を入れ替えて。"],
+    money:["半年先の予定にお金を回して。","目先の得より、長い目で。","旅の積み立てを始めるなら今日。"],
+    family:["離れて暮らす家族を思い出して。","先の予定を一緒に立てて。","孫や甥姪の話題に縁があります。"],
+    social:["遠くの友に連絡を。","会えない人ほど大切に。","共通の話題が縁をつなぎます。"],
     colors:[{n:"紺色",c:"#24386E"},{n:"金色",c:"#D4AF37"},{n:"白",c:"#FFFFFF"}],
     items:["地図","双眼鏡","旅の写真"]
   },
@@ -829,6 +932,9 @@ const CARDS = [
     love:["褒め言葉を惜しまないで。","並んで歩く時間をつくって。","小さな贈りものが効きます。"],
     work:["感謝を伝えると、次が回ってきます。","紹介や口添えに恵まれます。","ひとりより、みんなで動く日。"],
     health:["よく笑うことが養生になります。","食卓をにぎやかに。","香りのあるもので気分を上げて。"],
+    money:["人のために使うと、巡ってきます。","贈りものに良い日。","ごちそうになったら素直に受けて。"],
+    family:["集まりに顔を出して。","家族に花や果物を。","ねぎらいの言葉を惜しまないで。"],
+    social:["紹介やお誘いに恵まれます。","褒めると、返ってきます。","名前を呼んで話しかけて。"],
     colors:[{n:"ピンク",c:"#F090AF"},{n:"赤",c:"#D8443C"},{n:"緑",c:"#4CA85F"}],
     items:["一輪の花","好きな香り","手土産"]
   },
@@ -843,6 +949,9 @@ const CARDS = [
     love:["別れ話より、仕切り直しの日。","相手の自由も尊重して。","一緒に出かけると進みます。"],
     work:["環境を変える相談に良い日。","引き継ぎや整理がはかどります。","勢いに任せて大丈夫。"],
     health:["いつもと違う道を歩いて。","海や川のそばへ。","荷物を軽くすると、体も軽くなります。"],
+    money:["出かけた先での出費は惜しまないで。","荷物と一緒に、支出も軽く。","乗り物代は自分への投資。"],
+    family:["家族の旅立ちを見送る日かも。","送り出すほうが、うまくいきます。","距離ができても縁は切れません。"],
+    social:["合わない人とは、離れていい。","新しい場所に居場所ができます。","別れは、次の出会いの合図。"],
     colors:[{n:"紺色",c:"#24386E"},{n:"水色",c:"#7FC4E0"},{n:"赤",c:"#D8443C"}],
     items:["時刻表","軽いかばん","使いかけの切符"]
   },
@@ -857,6 +966,9 @@ const CARDS = [
     love:["笑わせてくれる人を大切に。","気取らないほうが好かれます。","軽口が距離を縮めます。"],
     work:["息抜きが効率を上げます。","雑談から良い話が出ます。","気負わず、いつも通りで十分。"],
     health:["よく笑い、よく食べる日。","陽の当たる場所で少し休んで。","気にしすぎないことが薬。"],
+    money:["ささやかな贅沢が効きます。","甘いものへの出費は吉。","財布のひもは、ゆるめでいい日。"],
+    family:["笑い話が家の空気を変えます。","一緒に食べる時間をつくって。","小さな用事を頼んでみて。"],
+    social:["軽口が距離を縮めます。","気取らないほうが好かれます。","誘われたら、まず行ってみて。"],
     colors:[{n:"黄色",c:"#F2C744"},{n:"緑",c:"#4CA85F"},{n:"ベージュ",c:"#E3D2B4"}],
     items:["甘いおやつ","帽子","一枚の葉っぱ"]
   },
@@ -871,6 +983,9 @@ const CARDS = [
     love:["返事を急がせないで。","時間が味方する関係です。","記念日を思い出してみて。"],
     work:["結論は明日に持ち越して正解。","締切をもういちど確認して。","地道な作業が実を結びます。"],
     health:["食事の時間を一定に。","就寝時刻を決めてしまって。","焦りが体に出やすい日。ゆっくりと。"],
+    money:["大きな買い物は日を改めて。","支払いの期日を確認して。","こつこつが実を結ぶ日。"],
+    family:["返事を急がせないで。","記念日を思い出してみて。","時間が解いてくれることもあります。"],
+    social:["連絡が来るのを待つ日。","急かさないほうが、縁は続きます。","昔の縁が戻ってきそうです。"],
     colors:[{n:"紺色",c:"#24386E"},{n:"金色",c:"#D4AF37"},{n:"茶色",c:"#8A5A3B"}],
     items:["腕時計","カレンダー","温かい湯たんぽ"]
   }
@@ -965,10 +1080,13 @@ function starHtml(n){
 
 const card = CARDS[Math.floor(rand() * CARDS.length)];
 const message = pick(card.msgs);
-const sLove = score(), sWork = score(), sHealth = score();
-/* 総合運は3つの平均。ばらばらの数字にならないように */
-const sTotal = Math.min(5, Math.max(2, Math.round((sLove + sWork + sHealth) / 3)));
-const cLove = pick(card.love), cWork = pick(card.work), cHealth = pick(card.health);
+const sLove = score(), sFamily = score(), sSocial = score(),
+      sWork = score(), sMoney = score(), sHealth = score();
+/* 総合運は6つの平均。ばらばらの数字にならないように */
+const sTotal = Math.min(5, Math.max(2, Math.round(
+  (sLove + sFamily + sSocial + sWork + sMoney + sHealth) / 6)));
+const cLove = pick(card.love), cFamily = pick(card.family), cSocial = pick(card.social),
+      cWork = pick(card.work), cMoney = pick(card.money), cHealth = pick(card.health);
 const luckyColor = pick(card.colors);
 const luckyItem = pick(card.items);
 let pickIndex = Math.floor(rand() * 1000);
@@ -1034,10 +1152,16 @@ function renderResult(){
   $("message").textContent = message;
   $("starTotal").innerHTML = starHtml(sTotal);
   $("starLove").innerHTML = starHtml(sLove);
+  $("starFamily").innerHTML = starHtml(sFamily);
+  $("starSocial").innerHTML = starHtml(sSocial);
   $("starWork").innerHTML = starHtml(sWork);
+  $("starMoney").innerHTML = starHtml(sMoney);
   $("starHealth").innerHTML = starHtml(sHealth);
   $("cmtLove").textContent = cLove;
+  $("cmtFamily").textContent = cFamily;
+  $("cmtSocial").textContent = cSocial;
   $("cmtWork").textContent = cWork;
+  $("cmtMoney").textContent = cMoney;
   $("cmtHealth").textContent = cHealth;
   $("swatch").style.background = luckyColor.c;
   $("colorName").textContent = luckyColor.n;
@@ -1111,12 +1235,29 @@ $("againBtn").addEventListener("click", function(){
 /* ============================================================
    閉じる
    ============================================================ */
+/* 「この占いについて」は、結果と入れ替えて表示します。
+   折りたたみで下に伸ばすと、記事に埋め込んだ枠の高さを超えてしまうためです。 */
+function toTop(){
+  try{ window.scrollTo({ top:0, behavior:"smooth" }); }catch(e){ window.scrollTo(0,0); }
+}
+$("aboutBtn").addEventListener("click", function(){
+  $("result").hidden = true;
+  $("aboutView").hidden = false;
+  toTop();
+});
+$("backBtn").addEventListener("click", function(){
+  $("aboutView").hidden = true;
+  $("result").hidden = false;
+  toTop();
+});
+
 $("closeBtn").addEventListener("click", function(){
   if (shuffleTimer){ clearTimeout(shuffleTimer); shuffleTimer = null; }
   setFront(card);
   const res = $("result");
   res.hidden = true;
   res.classList.remove("reveal");
+  $("aboutView").hidden = true;
   $("card").classList.remove("spun");
   $("card").setAttribute("aria-label", "カードをめくって今日の運勢を見る");
   $("drawBtn").style.display = "";
