@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>この占いについて｜星よみ、今日の一枚</title>
+<meta name="description" content="ゴールドライフオンライン「星よみ、今日の一枚」の読み方と成り立ち。一枚引き、十二枚という数、四つの元素について。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Maru+Gothic:wght@400;500;700&family=Yomogi&display=swap">
+<style>
+/* ============================================================
+   星よみ、今日の一枚 — ゴールドライフオンライン
+   紫の夜空に白い手描きの星模様、黄色のアクセント。
+   埋め込み先が白でも成立するよう、全色を明示指定した単一テーマ。
+   ============================================================ */
+:root{
+  --violet:#5B4A9E;
+  --violet-deep:#463781;
+  --violet-soft:#8C7CD0;
+  --violet-pale:#F2EFFC;
+  --ink:#3B2F6B;
+  --yellow:#F7DA57;
+  --yellow-deep:#E3BE2E;
+  --cream:#FFFCF2;
+  --white:#FFFFFF;
+  --pink:#EE7FA8;
+  --green:#48AE86;
+  --serif:"Kaisei Decol", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --mincho:"Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif;
+  --sans:"Zen Maru Gothic", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --hand:"Yomogi", "Zen Maru Gothic", sans-serif;
+  --leaf-gold:#B08D3A;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+/* 記事に埋め込む枠の高さは記事側で決まっているため、
+   紫の地は中身のぶんだけ（.sheet）に塗り、その下は透明にしています。
+   こうすると、占いが終わったところで記事の地色に戻ります。 */
+html,body{background:transparent}
+body{
+  color:var(--white);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.85;
+  -webkit-text-size-adjust:100%;
+  overflow-x:hidden;
+}
+.sheet{
+  position:relative;overflow:hidden;
+  background:var(--violet);
+  border-radius:18px;
+}
+
+/* --- 背景の飾り --- */
+.bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;color:var(--yellow)}
+.blob.tr{top:-9%;right:-26%;width:38%}
+.blob.bl{bottom:-7%;left:-26%;width:40%}
+.doodle{position:absolute;color:#fff;opacity:.19}
+.doodle.y{color:var(--yellow);opacity:.55}
+.doodle.tw{animation:tw 4.5s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.12}50%{opacity:.5}}
+
+.wrap{
+  position:relative;z-index:1;
+  max-width:560px;margin:0 auto;
+  padding:30px 20px 34px;width:100%;
+}
+
+/* --- ヘッダー --- */
+.head{text-align:center;margin-bottom:6px}
+.eyebrow{
+  font-family:var(--hand);
+  font-size:13px;letter-spacing:.18em;color:var(--yellow);
+  margin:0 0 8px;text-indent:.18em;
+}
+.title{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(28px,7.6vw,38px);line-height:1.32;
+  color:var(--white);margin:0;text-wrap:balance;
+  text-shadow:0 3px 0 rgba(70,55,129,.35);
+}
+.squiggle{display:block;width:150px;height:12px;margin:8px auto 0;color:var(--yellow)}
+.lede{
+  font-size:14.5px;color:rgba(255,255,255,.88);
+  margin:12px auto 0;max-width:25em;
+}
+.date{
+  font-family:var(--hand);
+  text-align:center;font-size:13px;letter-spacing:.14em;color:var(--yellow);
+  margin:16px 0 0;font-variant-numeric:tabular-nums;
+}
+
+/* --- カード --- */
+.stage{
+  perspective:1400px;
+  display:flex;justify-content:center;
+  margin:16px 0 0;
+  position:relative;
+}
+.card{
+  position:relative;
+  width:clamp(212px,64vw,248px);
+  aspect-ratio:5/7.4;
+  transform-style:preserve-3d;
+  transition:transform 2.5s cubic-bezier(.15,.72,.15,1), width .7s ease 1.9s;
+  cursor:pointer;
+  animation:float 5.5s ease-in-out infinite;
+}
+.card:focus-visible{outline:3px solid var(--yellow);outline-offset:10px;border-radius:18px}
+@keyframes float{0%,100%{translate:0 0}50%{translate:0 -9px}}
+.card.spun{
+  transform:rotateY(1620deg);
+  animation:none;
+  width:clamp(176px,52vw,204px);
+  cursor:default;
+}
+.face{
+  position:absolute;inset:0;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 22px 40px rgba(38,26,86,.42);
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* 裏面：シンプルに、大きく */
+.back{
+  background:var(--cream);
+  border:2px solid var(--violet-deep);
+}
+.back::before{
+  content:"";position:absolute;inset:11px;
+  border:1.5px solid rgba(91,74,158,.35);border-radius:9px;
+}
+.back .bmark{width:46%;color:var(--violet)}
+
+/* 表面：夜空と天球儀（アール・ヌーヴォー風の金の飾り枠） */
+.front{
+  transform:rotateY(180deg);
+  --tint:#141C46;
+  --deep:#5A73C8;
+  --gilt:#E4C481;
+  background:#0A0F26;
+  border:2px solid #C9A45E;
+  flex-direction:column;justify-content:center;
+  padding:8% 12% 16.5%;text-align:center;
+}
+.fbg{
+  position:absolute;inset:0;
+  background:linear-gradient(168deg, var(--tint) 0%, #070B1E 100%);
+}
+.nebula{position:absolute;inset:0;overflow:hidden}
+.nebula i{
+  position:absolute;border-radius:50%;
+  background:radial-gradient(circle, var(--deep) 0%, rgba(0,0,0,0) 70%);
+  filter:blur(5px);
+}
+.nebula i:nth-child(1){left:-14%;top:12%;width:80%;aspect-ratio:1;opacity:.5}
+.nebula i:nth-child(2){right:-18%;top:36%;width:72%;aspect-ratio:1;opacity:.34}
+.nebula i:nth-child(3){left:20%;bottom:-10%;width:64%;aspect-ratio:1;opacity:.24}
+.cosmos{position:absolute;inset:0;width:100%;height:100%}
+.cosmos .orbit{fill:none;stroke:var(--gilt);stroke-width:.8;opacity:.42}
+.cosmos .planet{fill:var(--gilt)}
+.cosmos .crystal{fill:#BFE0F2;opacity:.3}
+.cosmos .facet{fill:#FFFFFF;opacity:.35}
+.cosmos .star{fill:#FFFFFF}
+.halo{
+  position:absolute;top:36%;left:50%;translate:-50% -50%;
+  width:52%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,.34) 0%, rgba(255,255,255,0) 66%);
+}
+.frame{position:absolute;inset:0;width:100%;height:100%;color:var(--gilt);opacity:.85}
+.motifwrap{
+  position:relative;z-index:1;width:80%;aspect-ratio:1;
+  margin:0 auto;display:flex;align-items:center;justify-content:center;
+}
+.aureole{position:absolute;inset:0;width:100%;height:100%;color:var(--gilt);opacity:.5}
+.front .motif{
+  width:58%;color:#FFF8E9;
+  filter:drop-shadow(0 0 8px var(--deep)) drop-shadow(0 0 16px rgba(255,255,255,.35));
+}
+.tex{
+  position:absolute;inset:0;opacity:.5;
+  background-image:radial-gradient(circle at 1px 1px, rgba(255,255,255,.10) 0.8px, transparent 1.1px);
+  background-size:11px 11px;
+}
+.plate{position:relative;z-index:1;margin-top:2%;width:100%}
+.kwtag{
+  display:inline-block;
+  font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.12em;text-indent:.12em;
+  color:#1B1330;background:linear-gradient(180deg,#F0DDA9,#D9B26B);
+  border-radius:999px;padding:2px 13px;white-space:nowrap;
+  box-shadow:0 0 10px rgba(228,196,129,.35);
+}
+.front .cname{
+  font-family:var(--mincho);font-weight:800;
+  font-size:clamp(20px,5.6vw,24px);letter-spacing:.08em;text-indent:.08em;
+  line-height:1.3;margin:8px 0 0;color:#FFF8E9;
+  text-shadow:0 0 12px var(--deep), 0 0 26px rgba(0,0,0,.5);
+}
+.namerule{display:block;width:74%;margin:5px auto 0;color:var(--gilt)}
+.front .cyomi{
+  font-family:var(--sans);
+  font-size:9.5px;font-weight:500;letter-spacing:.22em;text-indent:.22em;
+  color:#FFFFFF;opacity:.55;margin:4px 0 0;
+}
+
+/* --- 引くボタン --- */
+.draw{
+  display:block;margin:26px auto 0;
+  min-height:58px;padding:0 38px;
+  font-family:var(--sans);font-size:18px;font-weight:700;letter-spacing:.08em;
+  color:var(--ink);
+  background:var(--yellow);
+  border:2px solid var(--violet-deep);border-radius:999px;cursor:pointer;
+  box-shadow:0 6px 0 var(--violet-deep);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.draw:hover{transform:translateY(2px);box-shadow:0 4px 0 var(--violet-deep)}
+.draw:active{transform:translateY(6px);box-shadow:0 0 0 var(--violet-deep)}
+.draw:focus-visible{outline:3px solid var(--white);outline-offset:3px}
+.note{
+  font-family:var(--hand);
+  text-align:center;font-size:13px;color:rgba(255,255,255,.9);margin:16px 0 0;
+}
+
+/* --- 結果 --- */
+.result{margin-top:26px}
+.result[hidden]{display:none}
+.reveal{opacity:0;transform:translateY(16px);animation:rise .75s ease forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+
+.panel{
+  background:var(--cream);
+  color:var(--ink);
+  border:2px solid var(--violet-deep);
+  border-radius:18px;
+  padding:20px 18px;margin-bottom:16px;
+  box-shadow:0 6px 0 rgba(70,55,129,.55);
+  position:relative;
+}
+.plabel{
+  font-family:var(--hand);
+  font-size:13px;letter-spacing:.14em;
+  color:var(--violet);margin:0 0 14px;
+  display:flex;align-items:center;gap:9px;
+}
+.plabel .ic{width:17px;height:17px;flex:none;color:var(--yellow-deep)}
+.plabel::after{
+  content:"";flex:1;height:0;
+  border-top:2px dotted rgba(91,74,158,.35);
+}
+.msg{
+  font-family:var(--serif);font-size:16.5px;line-height:1.95;
+  color:var(--ink);margin:0;
+}
+
+/* 総合運 */
+.total{
+  display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+  background:var(--violet-pale);border:2px dashed rgba(91,74,158,.4);border-radius:14px;
+  padding:11px 14px;margin:0 0 16px;
+}
+.total .tname{font-family:var(--sans);font-weight:700;font-size:15px;letter-spacing:.08em;color:var(--violet)}
+.total .tstars{font-size:23px;letter-spacing:.14em;line-height:1;color:var(--yellow-deep)}
+.total .tstars .off{color:rgba(91,74,158,.22)}
+
+/* 星取り */
+.scores{display:grid;grid-template-columns:1fr;gap:13px}
+.score{display:grid;grid-template-columns:84px auto;gap:3px 12px;align-items:center}
+.score .sname{font-size:13.5px;font-weight:700;letter-spacing:.06em;color:var(--violet)}
+.score .stars{font-size:16px;letter-spacing:.14em;line-height:1}
+.score .scmt{grid-column:2;font-size:14px;color:var(--ink);line-height:1.7}
+.s-love .stars{color:var(--pink)}
+.s-family .stars{color:#E08A47}
+.s-social .stars{color:#4E9BC0}
+.s-work .stars{color:var(--violet-soft)}
+.s-money .stars{color:#C2951F}
+.s-health .stars{color:var(--green)}
+.stars .off{color:rgba(91,74,158,.22)}
+
+/* ラッキー */
+.lucky{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.lucky .box{
+  border:2px dashed rgba(91,74,158,.4);border-radius:14px;
+  padding:14px 10px;text-align:center;background:var(--violet-pale);
+}
+.lucky .cap{font-family:var(--hand);font-size:11.5px;letter-spacing:.14em;color:var(--violet);margin:0 0 9px}
+.swatch{
+  width:44px;height:44px;border-radius:50%;margin:0 auto 9px;
+  border:2px solid var(--violet-deep);
+  box-shadow:0 3px 0 rgba(70,55,129,.4);
+}
+.itemwrap{
+  width:44px;height:44px;margin:0 auto 9px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;background:var(--yellow);
+  border:2px solid var(--violet-deep);box-shadow:0 3px 0 rgba(70,55,129,.4);
+  color:var(--violet-deep);
+}
+.lucky .val{font-family:var(--serif);font-weight:700;font-size:16px;color:var(--ink);margin:0;line-height:1.5}
+
+/* おすすめ作品 */
+.pick .lead{font-size:14.5px;color:var(--ink);margin:0 0 14px;line-height:1.8}
+.pick .work{
+  display:block;text-decoration:none;position:relative;
+  border:2px solid var(--violet-deep);border-radius:14px;
+  padding:17px 15px;
+  background:linear-gradient(150deg,var(--violet) 0%, var(--violet-deep) 100%);
+  box-shadow:0 5px 0 rgba(70,55,129,.6);
+  transition:transform .14s ease, box-shadow .14s ease;
+}
+.pick .work:hover{transform:translateY(2px);box-shadow:0 3px 0 rgba(70,55,129,.6)}
+.pick .work:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.pick .wtitle{
+  font-family:var(--serif);font-size:17px;font-weight:700;color:var(--white);
+  margin:0;line-height:1.6;
+}
+.pick .wnote{font-size:13px;color:rgba(255,255,255,.8);margin:7px 0 0;line-height:1.7}
+.pick .wnote:empty{display:none}
+.pick .wgo{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--hand);font-size:13.5px;color:var(--yellow);margin-top:10px;letter-spacing:.06em;
+}
+.pick .wgo::after{content:"→"}
+.again{
+  display:block;width:100%;margin-top:14px;
+  min-height:48px;font-family:var(--sans);font-size:14px;font-weight:500;color:var(--violet);
+  background:var(--white);border:2px dashed rgba(91,74,158,.45);border-radius:999px;cursor:pointer;
+  transition:background .2s ease,border-color .2s ease;
+}
+.again:hover{background:var(--violet-pale);border-color:var(--violet)}
+.again:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+
+/* シェア */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.sbtn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  min-height:54px;padding:0 8px;text-decoration:none;
+  font-family:var(--sans);font-size:14.5px;font-weight:700;
+  color:#fff;border:2px solid var(--violet-deep);border-radius:14px;
+  box-shadow:0 4px 0 rgba(70,55,129,.55);cursor:pointer;
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.sbtn:hover{transform:translateY(2px);box-shadow:0 2px 0 rgba(70,55,129,.55)}
+.sbtn:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.sbtn svg{width:19px;height:19px;flex:none}
+.sbtn.x{background:#14131A}
+.sbtn.line{background:#06C755}
+.shint{
+  font-family:var(--hand);font-size:12.5px;line-height:1.9;
+  color:var(--violet);margin:14px 0 0;text-align:center;
+}
+.shint b{color:var(--ink)}
+
+/* この占いについて */
+.aboutbtn{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  width:100%;margin-top:2px;min-height:50px;padding:0 18px;
+  font-family:var(--sans);font-size:14.5px;font-weight:700;color:#fff;
+  background:rgba(255,255,255,.08);
+  border:2px dashed rgba(255,255,255,.5);border-radius:999px;cursor:pointer;
+  transition:background .2s ease,border-color .2s ease;
+}
+.aboutbtn:hover{background:rgba(255,255,255,.16);border-color:#fff}
+.aboutbtn:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.aboutbtn .q{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;flex:none;border-radius:50%;
+  background:var(--yellow);color:var(--ink);font-size:14px;line-height:1;
+}
+
+.intro{margin-top:22px;text-align:center}
+.intro[hidden]{display:none}
+.ilead{
+  font-size:14px;line-height:1.95;color:rgba(255,255,255,.9);
+  margin:0 auto 16px;max-width:26em;
+}
+.intro .aboutbtn{max-width:320px;margin-left:auto;margin-right:auto}
+
+.aboutview{margin-top:26px}
+.aboutview[hidden]{display:none}
+.atitle{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(21px,5.6vw,26px);color:var(--white);
+  margin:0 0 16px;text-align:center;text-shadow:0 3px 0 rgba(70,55,129,.35);
+}
+.abody{
+  background:var(--cream);color:var(--ink);
+  border:2px solid var(--violet-deep);border-radius:18px;
+  box-shadow:0 6px 0 rgba(70,55,129,.55);
+  padding:20px 18px;font-size:14.5px;line-height:1.95;
+}
+.abody p{margin:0 0 14px}
+.abody b{color:var(--violet)}
+.abody h3{
+  font-family:var(--mincho);font-weight:800;
+  font-size:16px;color:var(--violet-deep);
+  margin:22px 0 10px;padding-left:13px;position:relative;line-height:1.5;
+}
+.abody h3:first-child{margin-top:0}
+.abody h3::before{
+  content:"";position:absolute;left:0;top:.35em;
+  width:5px;height:1em;border-radius:3px;background:var(--yellow-deep);
+}
+.ellist{
+  list-style:none;padding:0;margin:0 0 14px;
+  display:grid;gap:9px;
+}
+.ellist li{
+  border:2px dashed rgba(91,74,158,.35);border-radius:12px;
+  background:var(--violet-pale);padding:9px 12px;font-size:13.5px;line-height:1.7;
+}
+.ellist b{
+  display:inline-block;min-width:2.6em;
+  font-family:var(--mincho);font-weight:800;font-size:16px;color:var(--violet-deep);
+}
+.ellist span{color:var(--ink);opacity:.8}
+.cards{
+  background:var(--violet-pale);border-radius:12px;padding:12px 14px;
+  font-size:13.5px;line-height:1.9;
+}
+.anote{
+  border-top:2px dotted rgba(91,74,158,.35);padding-top:13px;
+  font-size:13.5px;color:var(--violet);margin-bottom:0;
+}
+
+.foot{
+  text-align:center;font-family:var(--hand);font-size:13px;color:rgba(255,255,255,.9);
+  margin:24px 0 0;line-height:2;
+}
+.foot a{color:var(--yellow);text-underline-offset:4px}
+.close{
+  display:block;margin:22px auto 0;
+  min-height:50px;padding:0 30px;
+  font-family:var(--sans);font-size:14.5px;font-weight:700;color:#fff;
+  background:transparent;border:2px solid rgba(255,255,255,.65);border-radius:999px;
+  cursor:pointer;transition:background .2s ease,border-color .2s ease;
+}
+.close:hover{background:rgba(255,255,255,.14);border-color:#fff}
+.close:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+
+@media (max-width:400px){
+  body{font-size:16px}
+  .lucky{gap:10px}
+  .lucky .cap{font-size:11px;letter-spacing:.04em}
+  .wrap{padding:26px 15px 28px}
+  .panel{padding:18px 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+}
+</style>
+<style>
+body{background:var(--violet)}
+.sheet{border-radius:0;min-height:100vh}
+.wrap{padding:34px 20px 44px}
+.atitle{margin-bottom:22px}
+.actions{display:grid;gap:12px;max-width:360px;margin:26px auto 0}
+.backbtn{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  min-height:56px;padding:0 22px;text-align:center;text-decoration:none;
+  font-family:var(--sans);font-size:16px;font-weight:700;letter-spacing:.04em;
+  color:var(--ink);background:var(--yellow);
+  border:2px solid var(--violet-deep);border-radius:999px;cursor:pointer;
+  box-shadow:0 5px 0 var(--violet-deep);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.backbtn:hover{transform:translateY(2px);box-shadow:0 3px 0 var(--violet-deep)}
+.backbtn:active{transform:translateY(5px);box-shadow:0 0 0 var(--violet-deep)}
+.backbtn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.backlink{
+  display:flex;align-items:center;justify-content:center;
+  min-height:52px;text-align:center;text-decoration:none;
+  font-family:var(--sans);font-size:15px;font-weight:700;color:#fff;
+  border:2px solid rgba(255,255,255,.65);border-radius:999px;
+}
+.backlink:hover{background:rgba(255,255,255,.14);border-color:#fff}
+.backlink:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+</style>
+</head>
+<body>
+<div class="sheet">
+<div class="bg" id="bg" aria-hidden="true">
+  <svg class="blob tr" viewBox="0 0 200 200" fill="currentColor"><path d="M182 8c14 26 22 60 10 88s-42 48-70 62-56 18-78 6S8 118 14 92s34-46 62-60S168-18 182 8z"/></svg>
+  <svg class="blob bl" viewBox="0 0 200 200" fill="currentColor"><path d="M18 196c-16-24-24-58-14-88s40-52 70-64 62-14 82 2 20 48 12 76-24 52-50 66-84 32-100 8z"/></svg>
+</div>
+
+<div class="wrap">
+  <header class="head">
+    <p class="eyebrow">ゴールドライフオンライン</p>
+    <h1 class="title">星よみ、今日の一枚</h1>
+    <svg class="squiggle" viewBox="0 0 150 12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+      <path d="M3 8c12-7 24 7 36 0s24 7 36 0 24 7 36 0 12-4 36 0" stroke-width="2.6"/>
+    </svg>
+  </header>
+
+  <h2 class="atitle">この占いについて</h2>
+    <div class="abody">
+      <h3>一枚引き（ワンオラクル）という読み方</h3>
+      <p>カード占いには、何枚も並べて筋道を読み解くやり方と、その日に必要な一枚だけを引く
+      <b>「一枚引き（ワンオラクル）」</b>があります。この占いは後者です。
+      引いた一枚が受け持つ意味――占いの言葉で<b>象意（しょうい）</b>といいます――を、
+      今日の自分の身のうえに置きかえて読む、いちばん素朴で古い形の読み方です。</p>
+
+      <h3>なぜ十二枚なのか</h3>
+      <p>十二は、黄道十二宮（おひつじ座からうお座まで）、一年の十二か月、時計の十二時と、
+      天の巡りと暦をかぞえるときに繰り返しあらわれる数です。
+      この占いも十二枚をひと組として、一巡りで日々の移ろいをひととおり受け持つように組みました。</p>
+
+      <h3>四つの元素</h3>
+      <p>タロットの四つの組札（棒・金貨・剣・聖杯）が、それぞれ火・地・風・水を受け持つように、
+      この十二枚も三枚ずつ四つの元素に分けています。カードの名前の下に出ている
+      「火」「地」「風」「水」が、その印です。</p>
+      <ul class="ellist">
+        <li><b>火</b>　意志・光・たのしみ<br><span>灯台・木漏れ日・帆船</span></li>
+        <li><b>地</b>　実り・からだ・時間<br><span>芽ぶき・銀の鍵・星時計</span></li>
+        <li><b>風</b>　ことば・思考・移動<br><span>追い風・手紙・望遠鏡</span></li>
+        <li><b>水</b>　こころ・縁・休息<br><span>月と栞・泉・花束</span></li>
+      </ul>
+      <p>その日のカードの元素と<b>相性のよい運勢は、星がひとつぶん上がりやすく</b>なっています。
+      火の日は恋愛運と仕事運、地の日は金運と健康運、風の日は人づきあいと仕事運、
+      水の日は家族運と健康運。総合運は、六つの運勢の平均です。</p>
+
+      <h3>吉凶ではなく、今日の過ごし方</h3>
+      <p>いまのカード読みでは、一枚を「良い・悪い」で裁かず、
+      <b>今日はどう振る舞えば流れに乗れるか</b>という助言として受け取ります。
+      この十二枚にも吉凶は持たせず、「休む」「進む」「伝える」「待つ」といった、
+      今日の過ごし方をひとつずつ与えています。</p>
+      <p class="cards">月と栞（休む）／追い風（進む）／手紙（伝える）／灯台（見きわめる）／
+      芽ぶき（はじめる）／泉（うるおす）／銀の鍵（ひらく）／望遠鏡（遠くを見る）／
+      花束（ひとの縁）／帆船（旅立つ）／木漏れ日（たのしむ）／星時計（時を待つ）</p>
+
+      <h3>一日に一枚、引き直さない</h3>
+      <p>一枚引きには「同じ問いを何度も引かない」という作法があります。
+      引き直すほど答えは散らばり、かえって迷いが深くなるからです。
+      この占いも、その日の一枚は一度決まったら変わりません。
+      日付（日本時間）と、あなたの端末だけに残る番号から、決まった手順で選んでいるので、
+      <b>同じ日なら何度開いても同じ一枚</b>。日付が変われば、また別の一枚が届きます。
+      同じ日でも、隣の人には違うカードが出ます。</p>
+
+      <h3>お守りの色と品</h3>
+      <p>ラッキーカラーとラッキーアイテムは、その日のカードの象意を身のまわりに置いておくための
+      しるしです。身につける、持ち歩く、目に入るところに置く。
+      <b>守り札（タリスマン）を身近に置く</b>という、洋の東西を問わない古い習わしにならっています。</p>
+
+      <h3>今日の一作</h3>
+      <p>十二枚それぞれに、呼びよせる物語のテーマ（恋愛・家族・人生・笑い・驚き・健康・仕事・旅）を
+      定めてあります。その日のカードに合う一作を、
+      ゴールドライフオンラインで公開中の作品からお届けしています。</p>
+
+      <p class="anote">お名前も生年月日もうかがいません。端末に残る番号のほかは何も記録していません。<br>
+      占いは、背中を押してもらったり、いちど立ち止まったりするためのもの。
+      当たり外れよりも、今日をどう過ごすかのきっかけとして楽しんでいただけたら幸いです。</p>
+    </div>
+
+  <div class="actions">
+    <button class="backbtn" id="closeTab" type="button">
+      <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      このページを閉じる
+    </button>
+    <a class="backlink" href="https://renaissance-media.jp/">ゴールドライフオンラインへ</a>
+  </div>
+  <p class="foot" id="closeNote">閉じると、占いのページに戻ります。</p>
+</div>
+</div>
+
+<script>
+const DOODLE = {
+  sparkle:'<path d="M12 2c.7 5.4 3.9 8.6 9.3 9.3-5.4.7-8.6 3.9-9.3 9.3-.7-5.4-3.9-8.6-9.3-9.3C8.1 10.6 11.3 7.4 12 2z" fill="currentColor" stroke="none"/>',
+  star:'<path d="M12 3l2.7 5.8 6.3.8-4.7 4.3 1.3 6.3L12 17.1 6.4 20.2l1.3-6.3L3 9.6l6.3-.8z"/>',
+  moon:'<path d="M16.4 3.2a9 9 0 1 0 4.4 12.2 10.6 10.6 0 0 1-4.4-12.2z"/>',
+  comet:'<path d="M20 4l-9 9M4 20l3.4-3.4M9 6l1.6 1.6M6 11l1.6 1.6"/><path d="M9.5 14.5a3.2 3.2 0 1 1-4.6 4.4"/>',
+  cloud:'<path d="M3 15c0-2.3 1.9-4.2 4.2-4.2.5-2.4 2.6-4.2 5.1-4.2 2.9 0 5.2 2.3 5.2 5.2 0 .3 0 .6-.1.9"/><path d="M17.5 12.7c1.9 0 3.5 1.5 3.5 3.4M6 18c1.5-1 3-1 4.5 0s3 1 4.5 0"/>',
+  butterfly:'<path d="M12 6.5v11"/><path d="M12 9.5C10 5.5 4 5.8 4 9.8c0 3.4 5.4 5.6 8 3.2"/><path d="M12 9.5c2-4 8-3.7 8 .3 0 3.4-5.4 5.6-8 3.2"/><path d="M12 6.5l-1.6-2M12 6.5l1.6-2"/>',
+  rose:'<path d="M12 4.5a3.6 3.6 0 1 1-2.9 5.8"/><path d="M12 7.4a1.5 1.5 0 1 0 1.1 2.5"/><path d="M12 12v7M12 15l-3.5-2M12 17l3.5-2"/>',
+  gem:'<path d="M8.5 4h7L20 9l-8 11L4 9z"/><path d="M4 9h16M8.5 4L12 20M15.5 4L12 20"/>',
+  crown:'<path d="M3.5 17.5h17L19 6.5l-4.5 4.2L12 4.5l-2.5 6.2L5 6.5z"/>',
+  card:'<rect x="6" y="3" width="12" height="18" rx="1.6"/><path d="M12 8l1.3 2.7 2.9.4-2.1 2 .5 2.9L12 14.6 9.4 16l.5-2.9-2.1-2 2.9-.4z"/>',
+  swirl:'<path d="M4.5 12A7.5 7.5 0 1 1 12 19.5c-2.6 0-4.5-1.9-4.5-4.2 0-2 1.6-3.5 3.5-3.5"/>',
+  wave:'<path d="M2.5 13c2-3.4 4.2-3.4 6.2 0s4.2 3.4 6.2 0 4.2-3.4 6.6 0"/>',
+  plus:'<path d="M12 4.5v15M4.5 12h15"/>',
+  ring:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4" stroke-dasharray="1.5 3"/>',
+  sword:'<path d="M19 3l-9 9M10 12l-1.8 1.8M12.2 14.2L14 12.4M6.5 15.5l2 2M4 22l3.5-3.5"/>'
+};
+/* 見出しの文字にかからないよう、上のほう（y<15%）は左右のはしだけに置いています */
+const PLACES = [
+  ["card",    2,  4, 44,-10,""],  ["sparkle", 5, 13, 20,  0,"y"],
+  ["swirl",  97,  5, 28,  0,""],  ["star",   95, 14, 22,  0,"y"],
+
+  ["rose",    4, 22, 40,  0,""],  ["moon",   95, 21, 28,  0,"y"],
+  ["sword",  93, 30, 36, 10,""],  ["gem",     6, 33, 24,  0,""],
+  ["butterfly",96,42,34,  0,""],  ["sparkle", 5, 44, 20,  0,"y"],
+
+  ["crown",   4, 54, 30,  0,""],  ["card",   95, 55, 40,  7,""],
+  ["star",   95, 66, 22,  0,"y"], ["cloud",   4, 66, 38,  0,""],
+  ["ring",   96, 76, 24,  0,""],  ["moon",    5, 78, 26,  0,"y"],
+  ["butterfly",4,88, 32,  0,""],  ["comet",  93, 88, 40,  0,"y"],
+  ["gem",    96, 96, 24,  0,""],  ["sparkle", 6, 96, 20,  0,"y"],
+
+  ["wave",   30, 99, 30,  0,""],  ["swirl",  68, 99, 24,  0,""],
+  ["star",   48,  1, 20,  0,"y"], ["plus",   72,  1, 16,  0,""]
+];
+(function drawBg(){
+  const bg = document.getElementById("bg");
+  const twinkle = [2,8,15,22,28,32];
+  let html = "";
+  PLACES.forEach(function(p, i){
+    const [sym, x, y, w, rot, cls] = p;
+    html += '<svg class="doodle ' + cls + (twinkle.indexOf(i) >= 0 ? ' tw' : '') +
+      '" style="left:' + x + '%;top:' + y + '%;width:' + w + 'px;transform:translate(-50%,-50%) rotate(' + rot + 'deg);animation-delay:' + (i % 6) * 0.7 + 's" ' +
+      'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+      DOODLE[sym] + '</svg>';
+  });
+  bg.insertAdjacentHTML("beforeend", html);
+})();
+
+
+
+/* 「閉じる」は、このページが新しいタブで開かれているときだけ実際に閉じられます。
+   閉じられなかったときは、占いを載せた記事へ戻ります（?u= で受け取ったURL）。 */
+(function(){
+  function articleUrl(){
+    try{
+      var q = new URLSearchParams(location.search).get("u");
+      if (q) return q;
+      var r = document.referrer;
+      if (r && r.indexOf("renaissance-media.jp") >= 0) return r.split("#")[0];
+    }catch(e){}
+    return "https://renaissance-media.jp/";
+  }
+  var btn = document.getElementById("closeTab");
+  if (!btn) return;
+  btn.addEventListener("click", function(){
+    var back = articleUrl();
+    try{ window.close(); }catch(e){}
+    setTimeout(function(){ location.href = back; }, 250);
+  });
+})();
+</script>
+</body>
+</html>

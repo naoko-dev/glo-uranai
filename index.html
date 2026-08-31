@@ -394,6 +394,33 @@ body{
 }
 .abody p{margin:0 0 14px}
 .abody b{color:var(--violet)}
+.abody h3{
+  font-family:var(--mincho);font-weight:800;
+  font-size:16px;color:var(--violet-deep);
+  margin:22px 0 10px;padding-left:13px;position:relative;line-height:1.5;
+}
+.abody h3:first-child{margin-top:0}
+.abody h3::before{
+  content:"";position:absolute;left:0;top:.35em;
+  width:5px;height:1em;border-radius:3px;background:var(--yellow-deep);
+}
+.ellist{
+  list-style:none;padding:0;margin:0 0 14px;
+  display:grid;gap:9px;
+}
+.ellist li{
+  border:2px dashed rgba(91,74,158,.35);border-radius:12px;
+  background:var(--violet-pale);padding:9px 12px;font-size:13.5px;line-height:1.7;
+}
+.ellist b{
+  display:inline-block;min-width:2.6em;
+  font-family:var(--mincho);font-weight:800;font-size:16px;color:var(--violet-deep);
+}
+.ellist span{color:var(--ink);opacity:.8}
+.cards{
+  background:var(--violet-pale);border-radius:12px;padding:12px 14px;
+  font-size:13.5px;line-height:1.9;
+}
 .anote{
   border-top:2px dotted rgba(91,74,158,.35);padding-top:13px;
   font-size:13.5px;color:var(--violet);margin-bottom:0;
@@ -573,9 +600,9 @@ body{
       カードごとに、今日の運勢・ラッキーカラー・ラッキーアイテム、そして
       今日のあなたに合いそうな一作が決まっています。
     </p>
-    <button class="aboutbtn" type="button">
+    <a class="aboutbtn" href="about.html" target="_blank" rel="noopener">
       <span class="q">?</span> この占いについて
-    </button>
+    </a>
   </div>
 
   <section class="result" id="result" hidden aria-live="polite">
@@ -679,9 +706,9 @@ body{
       </p>
     </div>
 
-    <button class="aboutbtn" type="button">
+    <a class="aboutbtn" href="about.html" target="_blank" rel="noopener">
       <span class="q">?</span> この占いについて
-    </button>
+    </a>
 
 
     <p class="foot">
@@ -692,27 +719,6 @@ body{
     <button class="close" id="closeBtn" type="button">今日の占いを閉じる</button>
   </section>
 
-  <section class="aboutview" id="aboutView" hidden>
-    <h2 class="atitle">この占いについて</h2>
-    <div class="abody">
-        <p><b>1枚の決まり方</b>　その日の日付（日本時間）と、あなたの端末だけに残る番号から、
-        決まった手順で12枚のうち1枚を選んでいます。適当に変えているのではないので、
-        同じ日なら何度開いても同じ1枚。日付が変わると、また別の1枚が届きます。
-        同じ日でも、隣の人には違うカードが出ます。</p>
-
-        <p><b>6つの運勢</b>も同じ手順から決まり、総合運はその平均です。
-        おすすめの一作は、カードごとに決めた物語のテーマに合うものを、
-        ゴールドライフオンラインの公開中の作品から選んでいます。</p>
-
-        <p><b>12枚のカード</b>　月と栞（休む）／追い風（進む）／手紙（伝える）／灯台（見きわめる）／
-        芽ぶき（はじめる）／泉（うるおす）／銀の鍵（ひらく）／望遠鏡（遠くを見る）／花束（ひとの縁）／
-        帆船（旅立つ）／木漏れ日（たのしむ）／星時計（時を待つ）</p>
-
-        <p class="anote">お名前も生年月日もうかがいません。端末に残る番号のほかは何も記録していません。
-        占いは、背中を押してもらうためのもの。今日をどう過ごすかのきっかけにしてください。</p>
-      </div>
-    <button class="close" id="backBtn" type="button">占いの結果にもどる</button>
-  </section>
 </div>
 </div>
 
@@ -807,7 +813,7 @@ const THEME_LEAD = {
 
 const CARDS = [
   {
-    name:"月と栞", yomi:"TSUKI TO SHIORI", kw:"休む", themes:["life","humor"], tint:"#141C46", deep:"#5A73C8",
+    name:"月と栞", yomi:"TSUKI TO SHIORI", kw:"休む", el:"水", themes:["life","humor"], tint:"#141C46", deep:"#5A73C8",
     motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M37 11a17 17 0 1 0 13 26 19 19 0 0 1-13-26z"/><path d="M17 38h11v16l-5.5-4.5L17 54z"/><path d="M44 15l1.4 3.6L49 20l-3.6 1.4L44 25l-1.4-3.6L39 20l3.6-1.4z" fill="currentColor" stroke="none"/></svg>',
     msgs:[
       "急がなくていい一日です。読みかけの本にそっと栞を挟むように、途中のままにしておくことを、自分に許してあげてください。",
@@ -824,7 +830,7 @@ const CARDS = [
     items:["読みかけの本","白いハンカチ","湯呑み"]
   },
   {
-    name:"追い風", yomi:"OIKAZE", kw:"進む", themes:["work","life"], tint:"#0F2A34", deep:"#35A08C",
+    name:"追い風", yomi:"OIKAZE", kw:"進む", el:"風", themes:["work","life"], tint:"#0F2A34", deep:"#35A08C",
     motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M7 21h27a6.5 6.5 0 1 0-6.5-6.5"/><path d="M7 31h33a6.5 6.5 0 1 1-6.5 6.5"/><path d="M7 41h19"/><path d="M48 46l1.2 3.2L52.5 50l-3.3 1.2L48 54l-1.2-2.8-3.3-1.2 3.3-.8z" fill="currentColor" stroke="none"/></svg>',
     msgs:[
       "背中を押される感覚のある日。迷っているなら、軽いほうを選んで構いません。動いた先に答えがあります。",
@@ -841,7 +847,7 @@ const CARDS = [
     items:["歩きやすい靴","新しいペン","小さな鏡"]
   },
   {
-    name:"手紙", yomi:"TEGAMI", kw:"伝える", themes:["family","love"], tint:"#2C1B34", deep:"#B06A9A",
+    name:"手紙", yomi:"TEGAMI", kw:"伝える", el:"風", themes:["family","love"], tint:"#2C1B34", deep:"#B06A9A",
     motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="7" y="17" width="46" height="30" rx="3"/><path d="M7 20l23 15 23-15"/><path d="M46 8l1.7 4.5L52 14l-4.3 1.5L46 20l-1.7-4.5L40 14l4.3-1.5z" fill="currentColor" stroke="none"/></svg>',
     msgs:[
       "言えずにいた言葉が、今日なら自然に出てきます。長くなくていいので、思ったことをそのまま渡してみてください。",
@@ -858,7 +864,7 @@ const CARDS = [
     items:["便箋","切手","お気に入りのカップ"]
   },
   {
-    name:"灯台", yomi:"TOUDAI", kw:"見きわめる", themes:["life","mystery"], tint:"#0E1E44", deep:"#3C7ECC",
+    name:"灯台", yomi:"TOUDAI", kw:"見きわめる", el:"火", themes:["life","mystery"], tint:"#0E1E44", deep:"#3C7ECC",
     motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M23 22h14l5 30H18z"/><path d="M21 31h18M20 41h20"/><rect x="24" y="11" width="12" height="11" rx="1.5"/><path d="M11 15l11 3M49 15l-11 3"/><path d="M30 4l1.3 3.4L35 9l-3.7 1.3L30 14l-1.3-3.7L25 9l3.7-1.6z" fill="currentColor" stroke="none"/></svg>',
     msgs:[
       "迷いのなかにいても、進む方角はもう決まっています。今日は情報を増やすより、削るほうがうまくいきます。",
@@ -875,7 +881,7 @@ const CARDS = [
     items:["眼鏡拭き","手帳","灯りの下の読書"]
   },
   {
-    name:"芽ぶき", yomi:"MEBUKI", kw:"はじめる", themes:["life","travel"], tint:"#12281E", deep:"#4CA46C",
+    name:"芽ぶき", yomi:"MEBUKI", kw:"はじめる", el:"地", themes:["life","travel"], tint:"#12281E", deep:"#4CA46C",
     motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M30 52V25"/><path d="M30 30c-9 0-15.5-5.5-15.5-13.5C23.5 16.5 30 22 30 30z"/><path d="M30 34c9 0 15.5-5.5 15.5-13.5C36.5 20.5 30 26 30 34z"/><path d="M19 52h22"/><path d="M47 9l1.3 3.4L52 14l-3.7 1.3L47 19l-1.3-3.7L42 14l3.7-1.6z" fill="currentColor" stroke="none"/></svg>',
     msgs:[
       "小さく始めるのに向いた日。うまくやろうとせず、まず一行、一歩、ひと口から。",
@@ -892,7 +898,7 @@ const CARDS = [
     items:["種や苗","新しいノート","果物"]
   },
   {
-    name:"泉", yomi:"IZUMI", kw:"うるおす", themes:["health","life"], tint:"#0C2430", deep:"#33A0BC",
+    name:"泉", yomi:"IZUMI", kw:"うるおす", el:"水", themes:["health","life"], tint:"#0C2430", deep:"#33A0BC",
     motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M30 8c5.5 9 9 13.5 9 19a9 9 0 1 1-18 0c0-5.5 3.5-10 9-19z"/><path d="M10 43c6.5-3.5 13-3.5 20 0s13.5 3.5 20 0"/><path d="M12 51c5.5-3 11.5-3 18 0s12.5 3 18 0"/></svg>',
     msgs:[
       "消耗していたぶんが、今日ゆっくり戻ってきます。頑張ることより、満たすことを選んでください。",
@@ -909,7 +915,7 @@ const CARDS = [
     items:["水のボトル","入浴剤","やわらかいタオル"]
   },
   {
-    name:"銀の鍵", yomi:"GIN NO KAGI", kw:"ひらく", themes:["mystery","work"], tint:"#1B1636", deep:"#7E6ACC",
+    name:"銀の鍵", yomi:"GIN NO KAGI", kw:"ひらく", el:"地", themes:["mystery","work"], tint:"#1B1636", deep:"#7E6ACC",
     motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="21" cy="21" r="10"/><path d="M28 28l22 22M42 42l6 6M38 47l5 5"/><path d="M14 47l1.2 3.2L18.5 51l-3.3 1.2L14 55l-1.2-2.8L9.5 51l3.3-.8z" fill="currentColor" stroke="none"/></svg>',
     msgs:[
       "閉じていたものが開く日。しまい込んだ書類、連絡していない相手、後回しの用事——鍵はそのあたりにあります。",
@@ -926,7 +932,7 @@ const CARDS = [
     items:["鍵","古い写真","しまい込んでいた器"]
   },
   {
-    name:"望遠鏡", yomi:"BOUENKYOU", kw:"遠くを見る", themes:["travel","mystery"], tint:"#101838", deep:"#4A6ADC",
+    name:"望遠鏡", yomi:"BOUENKYOU", kw:"遠くを見る", el:"風", themes:["travel","mystery"], tint:"#101838", deep:"#4A6ADC",
     motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M9 27l27-12.5 6.5 12.5-27 12.5z"/><path d="M36 14.5L47 19l-4.5 11"/><path d="M22 33l4 19M31 52H17"/><path d="M50 8l1.3 3.4L55 13l-3.7 1.3L50 18l-1.3-3.7L45 13l3.7-1.6z" fill="currentColor" stroke="none"/></svg>',
     msgs:[
       "視野が広がる日。近くのことで気を揉むより、行ってみたい場所や、会いたい人を思い浮かべてみてください。",
@@ -943,7 +949,7 @@ const CARDS = [
     items:["地図","双眼鏡","旅の写真"]
   },
   {
-    name:"花束", yomi:"HANATABA", kw:"ひとの縁", themes:["love","family"], tint:"#2A1230", deep:"#C4608A",
+    name:"花束", yomi:"HANATABA", kw:"ひとの縁", el:"水", themes:["love","family"], tint:"#2A1230", deep:"#C4608A",
     motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><g><circle cx="20" cy="11.4" r="3.2"/><circle cx="24.4" cy="14.6" r="3.2"/><circle cx="22.7" cy="19.7" r="3.2"/><circle cx="17.3" cy="19.7" r="3.2"/><circle cx="15.6" cy="14.6" r="3.2"/><circle cx="20" cy="16" r="2"/></g><g><circle cx="40" cy="11.4" r="3.2"/><circle cx="44.4" cy="14.6" r="3.2"/><circle cx="42.7" cy="19.7" r="3.2"/><circle cx="37.3" cy="19.7" r="3.2"/><circle cx="35.6" cy="14.6" r="3.2"/><circle cx="40" cy="16" r="2"/></g><g><circle cx="30" cy="23.4" r="3.2"/><circle cx="34.4" cy="26.6" r="3.2"/><circle cx="32.7" cy="31.7" r="3.2"/><circle cx="27.3" cy="31.7" r="3.2"/><circle cx="25.6" cy="26.6" r="3.2"/><circle cx="30" cy="28" r="2"/></g><path d="M20 23l7 17M40 23l-7 17M30 35v5"/><path d="M18 41h24l-3.5 11h-17z"/><path d="M20.5 46h19"/></svg>',
     msgs:[
       "人からもらうもののある日。物でなくても、言葉や気遣いという形で届きます。素直に喜んでください。",
@@ -960,7 +966,7 @@ const CARDS = [
     items:["一輪の花","好きな香り","手土産"]
   },
   {
-    name:"帆船", yomi:"HANSEN", kw:"旅立つ", themes:["travel","work"], tint:"#0B1F34", deep:"#2E92BE",
+    name:"帆船", yomi:"HANSEN", kw:"旅立つ", el:"火", themes:["travel","work"], tint:"#0B1F34", deep:"#2E92BE",
     motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M30 7v31"/><path d="M30 12l15 24H30z"/><path d="M27 17L14 36h13z"/><path d="M8 41h44l-6.5 11H14.5z"/><path d="M48 8l1.2 3.2L52.5 12l-3.3 1.2L48 16l-1.2-2.8L43.5 12l3.3-.8z" fill="currentColor" stroke="none"/></svg>',
     msgs:[
       "同じ場所に留まらなくていい日。予定を変える、道を変える。それだけで景色が変わります。",
@@ -977,7 +983,7 @@ const CARDS = [
     items:["時刻表","軽いかばん","使いかけの切符"]
   },
   {
-    name:"木漏れ日", yomi:"KOMOREBI", kw:"たのしむ", themes:["humor","health"], tint:"#241A12", deep:"#D8A63E",
+    name:"木漏れ日", yomi:"KOMOREBI", kw:"たのしむ", el:"火", themes:["humor","health"], tint:"#241A12", deep:"#D8A63E",
     motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="30" cy="24" r="10"/><path d="M30 5v6M30 37v5M11 24h6M43 24h6M16 10l4.5 4.5M44 10l-4.5 4.5"/><path d="M12 50c9-7 27-7 36 0"/></svg>',
     msgs:[
       "肩の力が抜ける日。おかしなこと、くだらないことを笑えるうちは大丈夫、というお守りのような一日です。",
@@ -994,7 +1000,7 @@ const CARDS = [
     items:["甘いおやつ","帽子","一枚の葉っぱ"]
   },
   {
-    name:"星時計", yomi:"HOSHIDOKEI", kw:"時を待つ", themes:["life","love"], tint:"#1A1440", deep:"#8E72D8",
+    name:"星時計", yomi:"HOSHIDOKEI", kw:"時を待つ", el:"地", themes:["life","love"], tint:"#1A1440", deep:"#8E72D8",
     motif:'<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="30" cy="31" r="20"/><path d="M30 31V19M30 31l9 7"/><path d="M30 5v5M30 52v5M5 31h5M50 31h5"/><circle cx="30" cy="31" r="2.2" fill="currentColor" stroke="none"/><path d="M50 9l1.2 3.2L54.5 13l-3.3 1.2L50 17l-1.2-2.8L45.5 13l3.3-.8z" fill="currentColor" stroke="none"/></svg>',
     msgs:[
       "急いても進まないことがあります。今日は熟すのを待つ日。待つことも、立派に前へ進んでいます。",
@@ -1086,12 +1092,20 @@ const DATE_KEY = T.y + "-" + String(T.m).padStart(2,"0") + "-" + String(T.d).pad
 const rand = mulberry32(xmur3("glo-hoshiyomi-" + DATE_KEY + "-" + visitorId())());
 const pick = (arr) => arr[Math.floor(rand() * arr.length)];
 
-function score(){
+/* カードの元素と相性のよい運勢は、星がひとつぶん上がりやすくなります。
+   タロットの四つの組札（火・地・風・水）の考え方にならった配分です。 */
+const AFFINITY = {
+  "火": ["love", "work"],
+  "地": ["money", "health"],
+  "風": ["social", "work"],
+  "水": ["family", "health"]
+};
+function score(kind){
   const r = rand();
-  if (r < 0.10) return 2;
-  if (r < 0.42) return 3;
-  if (r < 0.80) return 4;
-  return 5;
+  let n = (r < 0.10) ? 2 : (r < 0.42) ? 3 : (r < 0.80) ? 4 : 5;
+  const aff = AFFINITY[card.el] || [];
+  if (kind && aff.indexOf(kind) >= 0) n += 1;
+  return Math.min(5, n);
 }
 function starHtml(n){
   let s = "";
@@ -1101,8 +1115,8 @@ function starHtml(n){
 
 const card = CARDS[Math.floor(rand() * CARDS.length)];
 const message = pick(card.msgs);
-const sLove = score(), sFamily = score(), sSocial = score(),
-      sWork = score(), sMoney = score(), sHealth = score();
+const sLove = score("love"), sFamily = score("family"), sSocial = score("social"),
+      sWork = score("work"), sMoney = score("money"), sHealth = score("health");
 /* 総合運は6つの平均。ばらばらの数字にならないように */
 const sTotal = Math.min(5, Math.max(2, Math.round(
   (sLove + sFamily + sSocial + sWork + sMoney + sHealth) / 6)));
@@ -1150,7 +1164,7 @@ $("dateLabel").textContent = T.y + "年" + T.m + "月" + T.d + "日（" + WD[T.w
 function setFront(c){
   $("motif").innerHTML = c.motif;
   $("cardName").textContent = c.name;
-  $("cardYomi").textContent = c.yomi;
+  $("cardYomi").textContent = c.el + " ・ " + c.yomi;
   $("cardKw").textContent = c.kw;
   $("front").style.setProperty("--tint", c.tint);
   $("front").style.setProperty("--deep", c.deep);
@@ -1257,32 +1271,12 @@ $("againBtn").addEventListener("click", function(){
 /* ============================================================
    閉じる
    ============================================================ */
-/* 「この占いについて」は、結果と入れ替えて表示します。
-   折りたたみで下に伸ばすと、記事に埋め込んだ枠の高さを超えてしまうためです。 */
-function toTop(){
-  try{ window.scrollTo({ top:0, behavior:"smooth" }); }catch(e){ window.scrollTo(0,0); }
-}
-Array.prototype.forEach.call(document.querySelectorAll(".aboutbtn"), function(b){
-  b.addEventListener("click", function(){
-    $("result").hidden = true;
-    $("intro").hidden = true;
-    $("aboutView").hidden = false;
-    toTop();
-  });
-});
-$("backBtn").addEventListener("click", function(){
-  $("aboutView").hidden = true;
-  if (drawn) $("result").hidden = false; else $("intro").hidden = false;
-  toTop();
-});
-
 $("closeBtn").addEventListener("click", function(){
   if (shuffleTimer){ clearTimeout(shuffleTimer); shuffleTimer = null; }
   setFront(card);
   const res = $("result");
   res.hidden = true;
   res.classList.remove("reveal");
-  $("aboutView").hidden = true;
   $("intro").hidden = false;
   $("card").classList.remove("spun");
   $("card").setAttribute("aria-label", "カードをめくって今日の運勢を見る");
@@ -1314,6 +1308,11 @@ function starText(n){
   for (let i = 1; i <= 5; i++) s += (i <= n ? "★" : "☆");
   return s;
 }
+/* 「この占いについて」は別タブ。記事のURLを渡して、戻り先にできるようにします */
+Array.prototype.forEach.call(document.querySelectorAll(".aboutbtn"), function(a){
+  a.href = "about.html?u=" + encodeURIComponent(shareUrl());
+});
+
 function shareText(){
   return "今日の1枚は〈" + card.name + "〉。" + card.kw + "、という日でした。\n"
        + "今日の総合運 " + starText(sTotal) + "\n"
