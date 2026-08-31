@@ -34,27 +34,33 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
+/* 記事に埋め込む枠の高さは記事側で決まっているため、
+   紫の地は中身のぶんだけ（.sheet）に塗り、その下は透明にしています。
+   こうすると、占いが終わったところで記事の地色に戻ります。 */
+html,body{background:transparent}
 body{
-  background:var(--violet);
   color:var(--white);
   font-family:var(--sans);
   font-size:17px;
   line-height:1.85;
   -webkit-text-size-adjust:100%;
-  min-height:100vh;
-  position:relative;
   overflow-x:hidden;
+}
+.sheet{
+  position:relative;overflow:hidden;
+  background:var(--violet);
+  border-radius:18px;
 }
 
 /* --- 背景の飾り --- */
-.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .blob{position:absolute;color:var(--yellow)}
-.blob.tr{top:-13%;right:-24%;width:46%}
-.blob.bl{bottom:-9%;left:-24%;width:48%}
-.doodle{position:absolute;color:#fff;opacity:.3}
-.doodle.y{color:var(--yellow);opacity:.85}
+.blob.tr{top:-9%;right:-26%;width:38%}
+.blob.bl{bottom:-7%;left:-26%;width:40%}
+.doodle{position:absolute;color:#fff;opacity:.19}
+.doodle.y{color:var(--yellow);opacity:.55}
 .doodle.tw{animation:tw 4.5s ease-in-out infinite}
-@keyframes tw{0%,100%{opacity:.18}50%{opacity:.72}}
+@keyframes tw{0%,100%{opacity:.12}50%{opacity:.5}}
 
 .wrap{
   position:relative;z-index:1;
@@ -365,6 +371,14 @@ body{
   background:var(--yellow);color:var(--ink);font-size:14px;line-height:1;
 }
 
+.intro{margin-top:22px;text-align:center}
+.intro[hidden]{display:none}
+.ilead{
+  font-size:14px;line-height:1.95;color:rgba(255,255,255,.9);
+  margin:0 auto 16px;max-width:26em;
+}
+.intro .aboutbtn{max-width:320px;margin-left:auto;margin-right:auto}
+
 .aboutview{margin-top:26px}
 .aboutview[hidden]{display:none}
 .atitle{
@@ -414,6 +428,7 @@ body{
 </head>
 <body>
 
+<div class="sheet">
 <div class="bg" id="bg" aria-hidden="true">
   <svg class="blob tr" viewBox="0 0 200 200" fill="currentColor"><path d="M182 8c14 26 22 60 10 88s-42 48-70 62-56 18-78 6S8 118 14 92s34-46 62-60S168-18 182 8z"/></svg>
   <svg class="blob bl" viewBox="0 0 200 200" fill="currentColor"><path d="M18 196c-16-24-24-58-14-88s40-52 70-64 62-14 82 2 20 48 12 76-24 52-50 66-84 32-100 8z"/></svg>
@@ -552,6 +567,17 @@ body{
   <button class="draw" id="drawBtn">今日の1枚を引く</button>
   <p class="note" id="drawNote">占いは1日1回。今日のあなたに届いた1枚は、何度開いても同じです。</p>
 
+  <div class="intro" id="intro">
+    <p class="ilead">
+      12枚のカードから、今日のあなたに1枚が届きます。<br>
+      カードごとに、今日の運勢・ラッキーカラー・ラッキーアイテム、そして
+      今日のあなたに合いそうな一作が決まっています。
+    </p>
+    <button class="aboutbtn" type="button">
+      <span class="q">?</span> この占いについて
+    </button>
+  </div>
+
   <section class="result" id="result" hidden aria-live="polite">
     <div class="panel">
       <p class="plabel">
@@ -653,7 +679,7 @@ body{
       </p>
     </div>
 
-    <button class="aboutbtn" id="aboutBtn" type="button">
+    <button class="aboutbtn" type="button">
       <span class="q">?</span> この占いについて
     </button>
 
@@ -688,6 +714,7 @@ body{
     <button class="close" id="backBtn" type="button">占いの結果にもどる</button>
   </section>
 </div>
+</div>
 
 <script>
 /* ============================================================
@@ -712,27 +739,21 @@ const DOODLE = {
 };
 /* 見出しの文字にかからないよう、上のほう（y<15%）は左右のはしだけに置いています */
 const PLACES = [
-  ["card",    2,  4, 46,-10,""],  ["sparkle", 4, 12, 20,  0,"y"],
-  ["swirl",  97,  5, 28,  0,""],  ["star",    95, 13, 22,  0,"y"],
+  ["card",    2,  4, 44,-10,""],  ["sparkle", 5, 13, 20,  0,"y"],
+  ["swirl",  97,  5, 28,  0,""],  ["star",   95, 14, 22,  0,"y"],
 
-  ["rose",    5, 20, 42,  0,""],  ["sparkle",15, 17, 22,  0,"y"],
-  ["moon",   93, 19, 30,  0,"y"], ["sword",  86, 25, 38, 10,""],
-  ["gem",     8, 30, 26,  0,""],  ["star",   17, 27, 20,  0,""],
-  ["butterfly",95,31, 36,  0,""], ["plus",   12, 37, 18,  0,"y"],
-  ["cloud",   3, 41, 44,  0,""],  ["sparkle",92, 39, 22,  0,"y"],
+  ["rose",    4, 22, 40,  0,""],  ["moon",   95, 21, 28,  0,"y"],
+  ["sword",  93, 30, 36, 10,""],  ["gem",     6, 33, 24,  0,""],
+  ["butterfly",96,42,34,  0,""],  ["sparkle", 5, 44, 20,  0,"y"],
 
-  ["crown",  20, 45, 32,  0,""],  ["ring",   80, 44, 26,  0,""],
-  ["star",    5, 49, 24,  0,"y"], ["card",   93, 51, 42,  7,""],
-  ["comet",  30, 53, 44,  0,"y"], ["wave",   70, 55, 34,  0,""],
-  ["swirl",   3, 57, 30,  0,""],  ["moon",   90, 60, 28,  0,"y"],
-  ["gem",    46, 58, 26,  0,""],  ["sparkle",72, 62, 22,  0,"y"],
-  ["butterfly",6,66, 36,  0,""],  ["star",   94, 70, 24,  0,""],
-  ["cloud",  26, 70, 42,  0,""],  ["plus",   58, 74, 18,  0,"y"],
-  ["rose",   88, 78, 38,  0,""],  ["sparkle", 7, 76, 20,  0,"y"],
-  ["ring",   16, 84, 26,  0,""],  ["comet",  78, 87, 44,  0,"y"],
-  ["star",   44, 88, 24,  0,"y"], ["swirl",  95, 92, 26,  0,""],
-  ["gem",     4, 92, 26,  0,""],  ["cloud",  62, 95, 42,  0,""],
-  ["moon",   30, 96, 26,  0,""],  ["sparkle",88, 97, 20,  0,"y"]
+  ["crown",   4, 54, 30,  0,""],  ["card",   95, 55, 40,  7,""],
+  ["star",   95, 66, 22,  0,"y"], ["cloud",   4, 66, 38,  0,""],
+  ["ring",   96, 76, 24,  0,""],  ["moon",    5, 78, 26,  0,"y"],
+  ["butterfly",4,88, 32,  0,""],  ["comet",  93, 88, 40,  0,"y"],
+  ["gem",    96, 96, 24,  0,""],  ["sparkle", 6, 96, 20,  0,"y"],
+
+  ["wave",   30, 99, 30,  0,""],  ["swirl",  68, 99, 24,  0,""],
+  ["star",   48,  1, 20,  0,"y"], ["plus",   72,  1, 16,  0,""]
 ];
 (function drawBg(){
   const bg = document.getElementById("bg");
@@ -1189,6 +1210,7 @@ function draw(){
   $("card").classList.add("spun");
   $("card").setAttribute("aria-label", "今日のカード：" + card.name);
   $("drawBtn").style.display = "none";
+  $("intro").hidden = true;
   $("drawNote").textContent = "この1枚は、今日1日あなたに同じ結果が出ます。";
 
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1240,14 +1262,17 @@ $("againBtn").addEventListener("click", function(){
 function toTop(){
   try{ window.scrollTo({ top:0, behavior:"smooth" }); }catch(e){ window.scrollTo(0,0); }
 }
-$("aboutBtn").addEventListener("click", function(){
-  $("result").hidden = true;
-  $("aboutView").hidden = false;
-  toTop();
+Array.prototype.forEach.call(document.querySelectorAll(".aboutbtn"), function(b){
+  b.addEventListener("click", function(){
+    $("result").hidden = true;
+    $("intro").hidden = true;
+    $("aboutView").hidden = false;
+    toTop();
+  });
 });
 $("backBtn").addEventListener("click", function(){
   $("aboutView").hidden = true;
-  $("result").hidden = false;
+  if (drawn) $("result").hidden = false; else $("intro").hidden = false;
   toTop();
 });
 
@@ -1258,6 +1283,7 @@ $("closeBtn").addEventListener("click", function(){
   res.hidden = true;
   res.classList.remove("reveal");
   $("aboutView").hidden = true;
+  $("intro").hidden = false;
   $("card").classList.remove("spun");
   $("card").setAttribute("aria-label", "カードをめくって今日の運勢を見る");
   $("drawBtn").style.display = "";
